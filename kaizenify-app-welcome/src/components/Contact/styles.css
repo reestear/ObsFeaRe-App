@@ -1,0 +1,33 @@
+#contact{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 160px 80px;
+    font-family: 'Courier New', Courier, monospace;
+}
+.contact-title{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+}
+.ct-1{
+    font-weight: 700;
+    font-size: 32px;
+    margin-bottom: 0px;
+}
+.ct-2{
+    width: 600px;
+}
+.contact-button{
+    width: 130px;
+    height: 40px;
+    background-color: transparent;
+    font-family: 'Roboto', sans-serif;
+    font-weight: "700";
+    font-size: "12px";
+    font-stretch: narrower;
+    margin-top: 30px;
+    border-radius: 20px;
+}
