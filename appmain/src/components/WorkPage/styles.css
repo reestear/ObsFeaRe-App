@@ -1,0 +1,7 @@
+.WorkPage{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 60px 50px;
+}

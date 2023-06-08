@@ -1,0 +1,78 @@
+.TaskModalTodo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px 15px;
+    gap: 10px;
+
+    width: 240px;
+    height: 45px;
+
+    background: #4f4f4f;
+    border-radius: 10px;
+}
+.TaskModalTodoCheck{
+  width: 20px;
+  height: 20px;
+}
+.TaskModalTodo input[type="checkbox"]{
+    appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 23px;
+  height: 20px;
+  border-radius: 20px;
+  padding-right: 5px;
+  border: 2px solid white;
+  outline: none;
+  cursor: pointer;
+}
+.TaskModalTodo input[type="checkbox"]:checked {
+  width: 23px;
+  height: 20px;
+  border: 2px solid #558c66;
+    background-color: #558c66;
+    /* position: relative; */
+}
+  
+.TaskModalTodo input[type="checkbox"]:checked::before {
+  width: 23px;
+  height: 20px;
+  /* height: 100%; */
+  font-size: 16px;
+  color: white;
+}
+
+.TaskModalTodo div input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+}
+.tmtHandler{
+  display: flex;
+  align-content: center;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.handleToDos{
+  display: flex;
+  justify-content: end;
+}
+.handleToDos button{
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}

@@ -1,0 +1,63 @@
+@import '~@fortawesome/fontawesome-free/css/all.css';
+.boardTodo{
+    /* cursor: pointer; */
+    cursor:grab;
+    /* user-select: none; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 25px;
+    
+    width: 280px;
+    height: 50px;
+
+    background-color: blue;
+    border-radius: 10px;
+}
+.boardTodo input[type="checkbox"]{
+    appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 1.6em;
+  margin-right: 0.5em;
+  border: 0.15em solid white;
+  outline: none;
+  cursor: pointer;
+}
+.boardTodo input[type="checkbox"]:checked {
+    border: none;
+    background-color: #375841;
+    position: relative;
+}
+  
+.boardTodo input[type="checkbox"]:checked::before {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  color: white;
+}
+.boardTodoInfo{
+    cursor:grab;
+    user-select: none;
+    padding-left: 20px;
+    width: 210px;
+    height: 50px;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.boardTodoInfoTodoTitle{
+    cursor:grab;
+    font-size: 14px;
+    margin: 0;
+}
+.boardTodoInfoTaskTitle{
+    cursor:grab;
+    font-size: 10px;
+    margin: 0;
+    margin-top: 2px;
+    opacity: 80%;
+}

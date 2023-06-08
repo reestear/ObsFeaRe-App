@@ -1,0 +1,32 @@
+.tasksHandler{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 650px;
+    height: 190px;
+    padding-left: 60px;
+    margin-bottom: 30px;
+}
+.btn-openTasks{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.tasksList{
+    display: flex;
+    flex-wrap: wrap;
+    width: 650px;
+    height: 135px;
+    overflow: auto;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+    row-gap: 10px;
+    margin-top: 30px;
+    /* margin-left: -800px; */
+}
+.btn-openTasks svg{
+    transition: scale;
+    transition-duration: 0.15s;
+}

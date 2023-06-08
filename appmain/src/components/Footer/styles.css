@@ -1,0 +1,25 @@
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 60px;
+    
+}
+.RightF p{
+    margin: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 200;
+    letter-spacing: 1px;
+}
+.footerMenu{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 140px;
+}
+.footerMenu a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

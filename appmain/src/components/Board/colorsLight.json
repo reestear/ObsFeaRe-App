@@ -1,0 +1,22 @@
+[
+    {
+        "boardColor": "rgba(223, 203, 241, 0.3)",
+        "titleColor": "rgba(223, 203, 241, 1)",
+        "todoColor": "rgba(223, 197, 246, 1)"
+    },
+    {
+        "boardColor": "rgba(152, 201, 236, 0.3)",
+        "titleColor": "rgba(152, 201, 236, 1)",
+        "todoColor": "rgba(134, 189, 228, 1)"
+    },
+    {
+        "boardColor": "rgba(252, 208, 198, 0.3)",
+        "titleColor": "rgba(252, 208, 198, 1)",
+        "todoColor": "rgba(249, 195, 183, 1)"
+    },
+    {
+        "boardColor": "rgba(169, 229, 161, 0.3)",
+        "titleColor": "rgba(169, 229, 161, 1)",
+        "todoColor": "rgba(158, 233, 148, 1)"
+    }
+]

@@ -1,0 +1,7 @@
+.toggle-theme-button{
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
