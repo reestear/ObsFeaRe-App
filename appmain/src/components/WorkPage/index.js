@@ -1,66 +1,79 @@
 import React, { createContext, useState } from "react";
-import "./styles.css";
+import {
+  useBoard,
+  useBoardsUpdate,
+  useDragUpdateBoards,
+  useUpdateData,
+} from "../../Contexts/DataContext";
+import { useUpdateModalTodos } from "../../Contexts/OpenModalContext";
 import Board from "../Board";
-import { useBoard, useDragUpdateBoards } from "../../Contexts/DataContext";
+import "./styles.css";
 
 export const dragContext = createContext();
 
 export default function WorkPage() {
   const boards = useBoard();
   const dragUpdateBoards = useDragUpdateBoards();
+  const updateModalTodos = useUpdateModalTodos();
+  const updateData = useUpdateData();
+  const updateBoards = useBoardsUpdate();
 
   const [currentBoardId, setCurrentBoardId] = useState(null);
   const [currentToDoId, setCurrentToDoId] = useState(null);
 
   function findParentWithClassName(element, className) {
-    let currentElement = element;
-
-    while (
-      !currentElement.className ||
-      !currentElement.className === className
-    ) {
-      currentElement = currentElement.parentNode;
-    }
-
-    return currentElement;
+    // if(element.className === "")
+    // console.log("inside of function");
+    while (element.className && element.className != className)
+      element = element.parentNode;
+    return element;
   }
 
   function dragOverHandler(e) {
     e.preventDefault();
 
+    // console.log(e.target);
     const parentDiv = findParentWithClassName(e.target, "boardTodo");
+    // console.log(e.target.parentNode.className);
+    console.log("parentDiv over : ");
+    console.log(parentDiv);
     if (parentDiv.className && parentDiv.className === "boardTodo")
       parentDiv.style.boxShadow = "0 3px 1px #1B79BE";
   }
   function dragLeaveHandler(e) {
     // e.target.style.boxShadow = "none";
     const parentDiv = findParentWithClassName(e.target, "boardTodo");
-    if (parentDiv.className && parentDiv.className === "boardTodo")
-      parentDiv.style.boxShadow = "none";
+    // if (parentDiv.className && parentDiv.className === "boardTodo")
+    parentDiv.style.boxShadow = "none";
     // e.target.style.opacity = "100%";
   }
   function dragStartHandler(e, boardId, todoId) {
     // console.log(`starting with boardId: ${boardId} and todoId: ${todoId}`);
+    console.log(e.target.className);
     setCurrentBoardId(boardId);
     setCurrentToDoId(todoId);
     e.target.style.opacity = "75%";
   }
   function dragEndHandler(e) {
+    e.preventDefault();
     // e.target.style.boxShadow = "none";
     const parentDiv = findParentWithClassName(e.target, "boardTodo");
-    if (parentDiv.className && parentDiv.className === "boardTodo")
-      parentDiv.style.boxShadow = "0 3px 1px none";
+    // if (parentDiv.className && parentDiv.className === "boardTodo")
+    parentDiv.style.boxShadow = "0 3px 1px none";
 
     e.target.style.opacity = "100%";
   }
   async function dropHandler(e, boardId, todoId) {
     e.preventDefault();
 
-    e.target.style.boxShadow = "none";
+    const parentDiv = findParentWithClassName(e.target, "boardTodo");
+    console.log("dropping parentDiv: ");
+    console.log(parentDiv);
+    parentDiv.style.boxShadow = "none";
 
-    console.log("before changes");
-    console.log(boards[currentBoardId].boardTodos);
-    console.log(boards[boardId].boardTodos);
+    // console.log("before changes");
+    // console.log(boards[currentBoardId].boardTodos);
+    // console.log(boards[boardId].boardTodos);
 
     const currentIndex = boards[currentBoardId].boardTodos.findIndex(
       (todo) => todo._id === currentToDoId
@@ -68,14 +81,14 @@ export default function WorkPage() {
     const dropIndex = boards[boardId].boardTodos.findIndex(
       (todo) => todo._id === todoId
     );
-    console.log("dropIndex  = " + dropIndex);
-    console.log("currentIndex = " + currentIndex);
+    // console.log("dropIndex  = " + dropIndex);
+    // console.log("currentIndex = " + currentIndex);
 
     let repCurBoard = boards[currentBoardId].boardTodos.filter(
       (_, index) => index !== currentIndex
     );
-    console.log("repCurBoard: ");
-    console.log(repCurBoard);
+    // console.log("repCurBoard: ");
+    // console.log(repCurBoard);
 
     let repBoard = [];
     if (currentBoardId !== boardId) {
@@ -112,22 +125,25 @@ export default function WorkPage() {
         todo.order = index;
         todo.done = currentBoardId === 3;
       });
-      console.log("thereeeee");
-      console.log([...repBoard, ...repCurBoard]);
+      // console.log("thereeeee");
+      // console.log([...repBoard, ...repCurBoard]);
       await dragUpdateBoards([...repBoard, ...repCurBoard]);
     } else {
       repBoard.forEach((todo, index) => {
         todo.order = index;
       });
       // repBoard
-      console.log("thereeeee");
-      console.log(repBoard);
+      // console.log("thereeeee");
+      // console.log(repBoard);
       await dragUpdateBoards(repBoard);
+      await updateModalTodos();
+      await updateData();
+      await updateBoards();
     }
   }
 
   async function dropCardHandler(e, boardId) {
-    console.log("NOOOOO");
+    // console.log("NOOOOO");
     e.preventDefault();
 
     const currentIndex = boards[currentBoardId].boardTodos.findIndex(
@@ -142,7 +158,10 @@ export default function WorkPage() {
       todo.done = currentBoardId === 3;
     });
 
-    const repBoard = [boards[currentBoardId].boardTodos[currentIndex]];
+    const repBoard = [
+      ...boards[boardId].boardTodos,
+      boards[currentBoardId].boardTodos[currentIndex],
+    ];
     repBoard.forEach((todo, index) => {
       todo.boardId = boardId;
       todo.order = index;
@@ -150,6 +169,9 @@ export default function WorkPage() {
     });
 
     await dragUpdateBoards([...repBoard, ...repCurBoard]);
+    await updateModalTodos();
+    await updateData();
+    await updateBoards();
   }
 
   return (

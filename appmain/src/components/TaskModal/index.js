@@ -1,22 +1,22 @@
+import { animated as a, useSpring } from "@react-spring/web";
 import React from "react";
-import "./styles.css";
-import TaskModalTodo from "../TaskModalTodo.js";
-import TaskModalNewTodo from "../TaskModalNewTodo";
-import { useTheme } from "../../Contexts/ThemeContext";
-import { useSpring, animated as a } from "@react-spring/web";
+import { useSelector } from "react-redux";
+import { useDeleteTask } from "../../Contexts/DataContext";
 import {
   useChangeTaskTitle,
   useModal,
+  useModalSendTask,
   useModalTodos,
   useModalUpdate,
   usePrevTask,
   useUpdatePrevTask,
-  useModalSendTask,
 } from "../../Contexts/OpenModalContext";
-import { useDeleteTask } from "../../Contexts/DataContext";
+import TaskModalNewTodo from "../TaskModalNewTodo";
+import TaskModalTodo from "../TaskModalTodo.js";
+import "./styles.css";
 
 export default function TaskModal() {
-  const darkTheme = useTheme();
+  const darkTheme = useSelector((state) => state.darkTheme);
   const openModal = useModal();
   const modalTodos = useModalTodos();
   const prevTask = usePrevTask();
@@ -25,12 +25,6 @@ export default function TaskModal() {
   const toggleModal = useModalUpdate();
   const modalSendTask = useModalSendTask();
   const deleteTask = useDeleteTask();
-
-  // console.log("prevTask._id = " + prevTask._id);
-  // console.log("prevTask:");
-  // console.log(prevTask);
-  // console.log("modalTodos are:");
-  // console.log(modalTodos);
 
   let firstTime = 1;
   const animatedProps = useSpring({
@@ -43,7 +37,7 @@ export default function TaskModal() {
 
   return (
     <a.div
-      className="TaskModal"
+      className="TaskModal easeTransition"
       style={{
         backgroundColor: darkTheme ? "#2C2C2C" : "#888888",
         ...animatedProps,

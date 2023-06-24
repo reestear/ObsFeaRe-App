@@ -1,17 +1,18 @@
 import React from "react";
-import { ThemeProvider } from "../../Contexts/ThemeContext";
-import Outline from "../Outline";
+import { Provider } from "react-redux";
 import { DataProvider } from "../../Contexts/DataContext";
 import { ModalProvider } from "../../Contexts/OpenModalContext";
+import store from "../../store/store";
+import Outline from "../Outline";
 
 export default function Main() {
   return (
-    <ThemeProvider>
+    <Provider store={store}>
       <DataProvider>
         <ModalProvider>
           <Outline></Outline>
         </ModalProvider>
       </DataProvider>
-    </ThemeProvider>
+    </Provider>
   );
 }

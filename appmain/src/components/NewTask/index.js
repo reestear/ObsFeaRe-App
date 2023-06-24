@@ -1,15 +1,15 @@
 import React from "react";
-import "./styles.css";
-import { useTheme } from "../../Contexts/ThemeContext";
+import { useSelector } from "react-redux";
 import {
   useModal,
   useModalUpdate,
   usePrevTask,
   useUpdatePrevTask,
 } from "../../Contexts/OpenModalContext";
+import "./styles.css";
 
 export default function NewTask() {
-  const darkTheme = useTheme();
+  const darkTheme = useSelector((state) => state.darkTheme);
   const openModal = useModal();
   const toggleModal = useModalUpdate();
   const prevTask = usePrevTask();

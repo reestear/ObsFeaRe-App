@@ -72,44 +72,13 @@ export function DataProvider({ children }) {
     // console.log("someoefsefsef");
     // console.log(weekTodos, activeTodos, progressTodos, doneTodos);
 
-    setData({
+    await setData({
       todos: todos,
       tasks: tasks,
     });
     // console.log("lskdjflsjdlfwlef");
     // console.log(boards);
   }
-
-  // useEffect(() => {
-  //   const { todos, tasks } = data;
-  //   const weekTodos = todos.filter((todo) => todo.boardId === 0);
-  //   const activeTodos = todos.filter((todo) => todo.boardId === 1);
-  //   const progressTodos = todos.filter((todo) => todo.boardId === 2);
-  //   const doneTodos = todos.filter((todo) => todo.boardId === 3);
-
-  //   setBoards([
-  //     {
-  //       boardId: 0,
-  //       boardTitle: "Week",
-  //       boardTodos: weekTodos,
-  //     },
-  //     {
-  //       boardId: 1,
-  //       boardTitle: "To Do",
-  //       boardTodos: activeTodos,
-  //     },
-  //     {
-  //       boardId: 2,
-  //       boardTitle: "In Progress",
-  //       boardTodos: progressTodos,
-  //     },
-  //     {
-  //       boardId: 3,
-  //       boardTitle: "Done",
-  //       boardTodos: doneTodos,
-  //     },
-  //   ]);
-  // }, [data]);
 
   async function sendUpdatedTask(prevTask, modalTodos) {
     const { _id, taskTitle } = prevTask;
@@ -136,6 +105,8 @@ export function DataProvider({ children }) {
     await dataUpdateBoards(merdegTodos);
     await updateData();
     await updateBoards();
+
+    // console.log("dragUpdateBoards lauched");
   }
 
   async function updateBoards() {

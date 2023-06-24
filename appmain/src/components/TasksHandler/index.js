@@ -1,10 +1,10 @@
+import { animated as a, useSpring } from "@react-spring/web";
 import React, { useState } from "react";
-import "./styles.css";
-import { useTheme } from "../../Contexts/ThemeContext";
-import TaskItem from "../TaskItem";
-import NewTask from "../NewTask";
-import { useSpring, animated as a } from "@react-spring/web";
+import { useSelector } from "react-redux";
 import { useData } from "../../Contexts/DataContext";
+import NewTask from "../NewTask";
+import TaskItem from "../TaskItem";
+import "./styles.css";
 
 export default function TasksHandler() {
   const data = useData();
@@ -13,7 +13,7 @@ export default function TasksHandler() {
   // console.log(tasks);
   // console.log("data: ");
   // console.log(data);
-  const darkTheme = useTheme();
+  const darkTheme = useSelector((state) => state.darkTheme);
   const [isOpenTasks, setIsOpenTasks] = useState(false);
   let firstTime = 1;
 
@@ -45,6 +45,7 @@ export default function TasksHandler() {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
+            className="easeTransition"
             d="M20 4L28.95 12.05L20 20.1"
             stroke={darkTheme ? "white" : "black"}
             stroke-width="1.33333"
@@ -52,6 +53,7 @@ export default function TasksHandler() {
             stroke-linejoin="round"
           />
           <path
+            className="easeTransition"
             d="M25.8333 4.00002L34.7833 12.05L25.8333 20.1"
             stroke={darkTheme ? "white" : "black"}
             stroke-width="1.33333"

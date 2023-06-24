@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import "./styles.css";
+import { useSelector } from "react-redux";
+import { useBoardsUpdate, useUpdateData } from "../../Contexts/DataContext";
+import { dataToggleToDo } from "../../Contexts/Services";
 import colorsDark from "../Board/colorsDark.json";
 import colorsLight from "../Board/colorsLight.json";
-import { useTheme } from "../../Contexts/ThemeContext";
-import { dataToggleToDo } from "../../Contexts/Services";
-import { useBoardsUpdate, useUpdateData } from "../../Contexts/DataContext";
 import { dragContext } from "../WorkPage";
+import "./styles.css";
 
 export default function BoardTodo({ boardId, todo }) {
   const {
@@ -22,7 +22,7 @@ export default function BoardTodo({ boardId, todo }) {
   const updateData = useUpdateData();
   const updateBoards = useBoardsUpdate();
 
-  const darkTheme = useTheme();
+  const darkTheme = useSelector((state) => state.darkTheme);
   const colors = darkTheme ? colorsDark : colorsLight;
 
   return (
@@ -39,23 +39,22 @@ export default function BoardTodo({ boardId, todo }) {
       <input
         checked={todo.done}
         type="checkbox"
-        className="boardTodoCheck"
+        className="boardTodoCheck easeTransition"
+        style={{ display: "transparent" }}
         onClick={async () => {
           await dataToggleToDo(todo._id);
           await updateData();
           await updateBoards();
         }}
       ></input>
-      <label>
-        <div className="boardTodoInfo" draggable={false}>
-          <p className="boardTodoInfoTodoTitle" draggable={false}>
-            {todoTitle}
-          </p>
-          <p className="boardTodoInfoTaskTitle" draggable={false}>
-            {taskTitle}
-          </p>
-        </div>
-      </label>
+      <div className="boardTodoInfo" draggable={false}>
+        <p className="boardTodoInfoTodoTitle" draggable={false}>
+          {todoTitle}
+        </p>
+        <p className="boardTodoInfoTaskTitle" draggable={false}>
+          {taskTitle}
+        </p>
+      </div>
     </div>
   );
 }

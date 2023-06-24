@@ -62,7 +62,7 @@ export default function Register() {
                     setEmail("");
                     setName("");
                     setPassword("");
-                    navigate("/WeekBan");
+                    navigate("/application");
                   }
                 });
               }}

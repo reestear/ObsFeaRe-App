@@ -1,13 +1,13 @@
 import React from "react";
-import "./styles.css";
-import { useTheme } from "../../Contexts/ThemeContext";
+import { useSelector } from "react-redux";
+import { useUpdateData } from "../../Contexts/DataContext";
 import {
   useModal,
   useModalUpdate,
   usePrevTask,
   useUpdatePrevTask,
 } from "../../Contexts/OpenModalContext";
-import { useUpdateData } from "../../Contexts/DataContext";
+import "./styles.css";
 
 export default function TaskItem({ task }) {
   const openModal = useModal();
@@ -16,7 +16,7 @@ export default function TaskItem({ task }) {
   const togglePrevTask = useUpdatePrevTask();
   const updateData = useUpdateData();
 
-  const darkTheme = useTheme();
+  const darkTheme = useSelector((state) => state.darkTheme);
   const { _id, taskTitle } = task;
   // console.log("the taskTitle: ");
   // console.log(taskTitle);
@@ -36,7 +36,7 @@ export default function TaskItem({ task }) {
         // console.log("is true: " + prevTask === null);
         await updateData();
 
-        if (!openModal || !prevTask._id || prevTask._id === -1) {
+        if (!openModal || !prevTask._id) {
           togglePrevTask({ _id, taskTitle });
           toggleModal();
           return;

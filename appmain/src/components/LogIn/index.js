@@ -42,7 +42,7 @@ export default function LogIn() {
                 dataUserLogin(email, password).then((res) => {
                   console.log("res: ");
                   console.log(res);
-                  if (res) navigate("/WeekBan");
+                  if (res) navigate("/application");
                 });
               }}
             >

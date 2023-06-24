@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useData, useSendUpdatedTask, useUpdateData } from "../DataContext";
 import { v4 as uuidv4 } from "uuid";
+import { useData, useSendUpdatedTask, useUpdateData } from "../DataContext";
 
 const ModalContext = createContext();
 const updateModalContext = createContext();
@@ -21,6 +21,12 @@ const toggleModalToDoContext = createContext();
 const modalSendTaskContext = createContext();
 
 const modalDeleteToDoContext = createContext();
+
+const updateModalTodosContext = createContext();
+
+export function useUpdateModalTodos() {
+  return useContext(updateModalTodosContext);
+}
 
 export function useModal() {
   return useContext(ModalContext);
@@ -69,8 +75,6 @@ export function ModalProvider({ children }) {
 
   const data = useData();
   const { todos } = data;
-  //   console.log("INSIDE OF MODALProvider todos:");
-  //   console.log(todos);
 
   function toggleModal() {
     // console.log("togglemodal");
@@ -82,6 +86,14 @@ export function ModalProvider({ children }) {
       setModalTodos(todos.filter((todo) => todo.taskId._id === _id));
     }
     setPrevTask({ _id, taskTitle });
+  }
+
+  function updateModalTodos() {
+    const { todos } = data;
+
+    if (prevTask._id !== -1) {
+      setModalTodos(todos.filter((todo) => todo.taskId._id === prevTask._id));
+    }
   }
 
   useEffect(() => {
@@ -108,14 +120,6 @@ export function ModalProvider({ children }) {
   }
 
   function changeTodoTitle(todoId, val) {
-    // setModalTodos(
-    //   modalTodos.map((todo) => {
-    //     if (todo._id === todoId) {
-    //       return { ...todo, todoTitle: val };
-    //     }
-    //     return todo;
-    //   })
-    // );
     console.log(
       "changing todo with _id: " + todoId + " with the todoTitle: " + val
     );
@@ -137,13 +141,6 @@ export function ModalProvider({ children }) {
     console.log("the newModalTodos: ");
     console.log(newModalTodos);
     setModalTodos(newModalTodos);
-
-    // setModalTodos((prevState) => ({
-    //   ...prevState,
-    //   array: prevState.array.map((obj) =>
-    //     obj._id === todoId ? { ...obj, todoTitle: val } : obj
-    //   ),
-    // }));
   }
 
   function modalDeleteToDo(todoId) {
@@ -169,10 +166,6 @@ export function ModalProvider({ children }) {
     await updateData();
   }
 
-  //   useEffect(() => {
-  //     setOpenModal(false);
-  //   }, []);
-
   return (
     <ModalContext.Provider value={openModal}>
       <prevTaskContext.Provider value={prevTask}>
@@ -187,7 +180,11 @@ export function ModalProvider({ children }) {
                         <modalDeleteToDoContext.Provider
                           value={modalDeleteToDo}
                         >
-                          {children}
+                          <updateModalTodosContext.Provider
+                            value={updateModalTodos}
+                          >
+                            {children}
+                          </updateModalTodosContext.Provider>
                         </modalDeleteToDoContext.Provider>
                       </modalSendTaskContext.Provider>
                     </toggleModalToDoContext.Provider>
