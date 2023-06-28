@@ -1,0 +1,54 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 60px;
+}
+.LeftH{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 271px;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-WeekBan, .btn-Timeline, .btn-PlayGround, .btn-More, .btn-userProfile{
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+}
+.btn-More svg{
+    transition: scale;
+    transition-duration: 0.15s;
+}
+.menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80px
+}
+.btn-logout{
+    display: flex;
+    transition: 0.25s;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    border-radius: 10px;
+    background: #FFF;
+    top: 65px;
+    right: 70px;
+    width: 100px;
+    height: 30px;
+    padding: 0px 10px;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    -webkit-user-select: none;
+}
+.btn-logout p {
+    font-size: 12px;
+    font-weight: 700;
+}
