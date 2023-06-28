@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import { useBoard } from "../../Contexts/DataContext";
-import BoardTodo from "../BoardTodo";
-import { dragContext } from "../WorkPage";
+import { useBoard } from "../../../../../../Contexts/DataContext";
+import { dragContext } from "../../WorkPage";
+import BoardTodo from "./BoardTodo";
 import colorsDark from "./colorsDark.json";
 import colorsLight from "./colorsLight.json";
 import "./styles.css";

@@ -1,9 +1,9 @@
 import React, { createContext, useState } from "react";
 import { useSelector } from "react-redux";
-import Footer from "../Footer";
-import Header from "../Header";
-import PlayGround from "../PlayGround";
-import WeekBan from "../WeekBan";
+import Footer from "./Footer";
+import Header from "./Header";
+import PlayGround from "./PlayGround";
+import WeekBan from "./WeekBan";
 
 export const PageContext = createContext();
 

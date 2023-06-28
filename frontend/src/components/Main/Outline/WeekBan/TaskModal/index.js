@@ -1,7 +1,7 @@
 import { animated as a, useSpring } from "@react-spring/web";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useDeleteTask } from "../../Contexts/DataContext";
+import { useDeleteTask } from "../../../../../Contexts/DataContext";
 import {
   useChangeTaskTitle,
   useModal,
@@ -10,9 +10,9 @@ import {
   useModalUpdate,
   usePrevTask,
   useUpdatePrevTask,
-} from "../../Contexts/OpenModalContext";
-import TaskModalNewTodo from "../TaskModalNewTodo";
-import TaskModalTodo from "../TaskModalTodo.js";
+} from "../../../../../Contexts/OpenModalContext";
+import TaskModalNewTodo from "./TaskModalNewTodo";
+import TaskModalTodo from "./TaskModalTodo.js";
 import "./styles.css";
 
 export default function TaskModal() {

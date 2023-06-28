@@ -1,10 +1,13 @@
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import { useBoardsUpdate, useUpdateData } from "../../Contexts/DataContext";
-import { dataToggleToDo } from "../../Contexts/Services";
-import colorsDark from "../Board/colorsDark.json";
-import colorsLight from "../Board/colorsLight.json";
-import { dragContext } from "../WorkPage";
+import {
+  useBoardsUpdate,
+  useUpdateData,
+} from "../../../../../../../Contexts/DataContext";
+import { dataToggleToDo } from "../../../../../../../Contexts/Services";
+import { dragContext } from "../../../WorkPage";
+import colorsDark from "../../Board/colorsDark.json";
+import colorsLight from "../../Board/colorsLight.json";
 import "./styles.css";
 
 export default function BoardTodo({ boardId, todo }) {

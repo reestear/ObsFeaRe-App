@@ -1,9 +1,9 @@
 import { animated as a, useSpring } from "@react-spring/web";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useData } from "../../Contexts/DataContext";
-import NewTask from "../NewTask";
-import TaskItem from "../TaskItem";
+import { useData } from "../../../../../Contexts/DataContext";
+import NewTask from "./NewTask";
+import TaskItem from "./TaskItem";
 import "./styles.css";
 
 export default function TasksHandler() {

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 // import { toggleTheme } from "../../store/reducers/themeSlice";
 // import { useTheme } from "../../Contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
-import ThemeCh from "../ThemeCh";
+import ThemeCh from "./ThemeCh";
 import "./styles.css";
 
 export default function Header({ togglePage }) {

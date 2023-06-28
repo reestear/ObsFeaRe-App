@@ -4,9 +4,9 @@ import {
   useBoardsUpdate,
   useDragUpdateBoards,
   useUpdateData,
-} from "../../Contexts/DataContext";
-import { useUpdateModalTodos } from "../../Contexts/OpenModalContext";
-import Board from "../Board";
+} from "../../../../../Contexts/DataContext";
+import { useUpdateModalTodos } from "../../../../../Contexts/OpenModalContext";
+import Board from "./Board";
 import "./styles.css";
 
 export const dragContext = createContext();

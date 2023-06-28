@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import "./styles.css";
 import {
   useChangeToDoTitle,
   useModalDeleteToDo,
   useToggleModalToDo,
-} from "../../Contexts/OpenModalContext";
+} from "../../../../../../Contexts/OpenModalContext";
+import "./styles.css";
 
 export default function TaskModalTodo({ todo }) {
   const changeTodoTitle = useChangeToDoTitle();

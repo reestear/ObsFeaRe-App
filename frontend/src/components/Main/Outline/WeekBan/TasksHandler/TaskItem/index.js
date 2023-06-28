@@ -1,12 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useUpdateData } from "../../Contexts/DataContext";
+import { useUpdateData } from "../../../../../../Contexts/DataContext";
 import {
   useModal,
   useModalUpdate,
   usePrevTask,
   useUpdatePrevTask,
-} from "../../Contexts/OpenModalContext";
+} from "../../../../../../Contexts/OpenModalContext";
 import "./styles.css";
 
 export default function TaskItem({ task }) {
