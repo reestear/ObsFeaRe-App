@@ -1,5 +1,12 @@
 import axios from "axios";
 
+const actoken = sessionStorage.getItem("actoken");
+const config = {
+  headers: {
+    authorization: `Bearer ${actoken}`,
+  },
+};
+
 export async function dataUserRegister(username, email, password) {
   const user = {
     username: username,
@@ -48,7 +55,7 @@ export async function dataUserLogin(email, password) {
     .get(`http://localhost:8080/auth/login/${email}/${password}`)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
-      console.log(mes);
+      // console.log(mes);
       sessionStorage.setItem("actoken", mes.actoken);
       return {
         status: true,
@@ -78,10 +85,6 @@ export async function dataGetTodos() {
     .get("http://localhost:8080/todos", config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
-      // console.log(mes);
-
-      // console.log("dataGetTodos: ");
-      // console.log(mes.todos);
       return mes.todos;
     });
 }
@@ -117,7 +120,7 @@ export async function dataSendUpdatedTask({ _id, taskTitle }, todos) {
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
-      console.log(mes.message);
+      // console.log(mes.message);
       return true;
     })
     .catch(async (err) => {
@@ -143,7 +146,7 @@ export async function dataToggleToDo(todoId) {
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
-      console.log(mes.message);
+      // console.log(mes.message);
       return true;
     })
     .catch(async (err) => {
@@ -169,7 +172,7 @@ export async function dataDeleteTask(taskId) {
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
-      console.log(mes.message);
+      // console.log(mes.message);
       return true;
     })
     .catch(async (err) => {
@@ -183,7 +186,7 @@ export async function dataDeleteTask(taskId) {
 }
 
 export async function dataUpdateBoards(mergedTodos) {
-  console.log(mergedTodos);
+  // console.log(mergedTodos);
   const actoken = sessionStorage.getItem("actoken");
   const config = {
     headers: {
@@ -196,7 +199,7 @@ export async function dataUpdateBoards(mergedTodos) {
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
-      console.log(mes.message);
+      // console.log(mes.message);
       return true;
     })
     .catch(async (err) => {
@@ -206,5 +209,22 @@ export async function dataUpdateBoards(mergedTodos) {
       console.log(errMes);
 
       return false;
+    });
+}
+
+export async function treesPull() {
+  return await axios
+    .get(`http://localhost:8080/trees`, config)
+    .then(async (res) => {
+      const mes = await JSON.parse(res.request.response);
+      // console.log(mes.message);
+      // console.log("mes.trees: " + mes.trees);
+      return mes.trees;
+    })
+    .catch(async (err) => {
+      const errMes = await JSON.parse(err.request.response).message;
+
+      console.log("printing errMes: ");
+      console.log(errMes);
     });
 }

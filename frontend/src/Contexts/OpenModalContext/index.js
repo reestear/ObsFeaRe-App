@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useData, useSendUpdatedTask, useUpdateData } from "../DataContext";
+import { useData } from "../DataContext";
 
 const ModalContext = createContext();
 const updateModalContext = createContext();
@@ -63,8 +63,8 @@ export function useModalDeleteToDo() {
 }
 
 export function ModalProvider({ children }) {
-  const updateData = useUpdateData();
-  const sendUpdatedTask = useSendUpdatedTask();
+  const contextPayload = useData();
+  const { data, updateData, sendUpdatedTask } = contextPayload;
 
   const [openModal, setOpenModal] = useState(false);
   const [prevTask, setPrevTask] = useState({
@@ -73,7 +73,6 @@ export function ModalProvider({ children }) {
   });
   const [modalTodos, setModalTodos] = useState([]);
 
-  const data = useData();
   const { todos } = data;
 
   function toggleModal() {
@@ -114,8 +113,6 @@ export function ModalProvider({ children }) {
   }
 
   function changeTaskTitle(val) {
-    // const { _id } = prevTask;
-    // const repTask = { _id, val };
     setPrevTask({ ...prevTask, taskTitle: val });
   }
 

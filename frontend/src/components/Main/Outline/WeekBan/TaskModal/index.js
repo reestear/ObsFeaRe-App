@@ -1,7 +1,7 @@
 import { animated as a, useSpring } from "@react-spring/web";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useDeleteTask } from "../../../../../Contexts/DataContext";
+import { useData } from "../../../../../Contexts/DataContext";
 import {
   useChangeTaskTitle,
   useModal,
@@ -24,7 +24,8 @@ export default function TaskModal() {
   const togglePrevTask = useUpdatePrevTask();
   const toggleModal = useModalUpdate();
   const modalSendTask = useModalSendTask();
-  const deleteTask = useDeleteTask();
+  const contextPayload = useData();
+  const { deleteTask } = contextPayload;
 
   let firstTime = 1;
   const animatedProps = useSpring({
@@ -37,7 +38,7 @@ export default function TaskModal() {
 
   useEffect(() => {
     document.addEventListener("mousedown", (e) => {
-      console.log("clicked");
+      // console.log("clicked");
       const classes = [
         "btn-TaskItem",
         "btn-NewTask",

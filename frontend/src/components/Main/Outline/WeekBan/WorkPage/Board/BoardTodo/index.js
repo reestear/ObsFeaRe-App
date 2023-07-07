@@ -1,9 +1,6 @@
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import {
-  useBoardsUpdate,
-  useUpdateData,
-} from "../../../../../../../Contexts/DataContext";
+import { useData } from "../../../../../../../Contexts/DataContext";
 import { dataToggleToDo } from "../../../../../../../Contexts/Services";
 import { dragContext } from "../../../WorkPage";
 import colorsDark from "../../Board/colorsDark.json";
@@ -22,8 +19,8 @@ export default function BoardTodo({ boardId, todo }) {
 
   const { todoTitle, taskId } = todo;
   const { taskTitle } = taskId;
-  const updateData = useUpdateData();
-  const updateBoards = useBoardsUpdate();
+  const contextPayload = useData();
+  const { updateBoards, updateData } = contextPayload;
 
   const darkTheme = useSelector((state) => state.darkTheme);
   const colors = darkTheme ? colorsDark : colorsLight;

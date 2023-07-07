@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useSelector } from "react-redux";
+import { TreesProvider } from "../../../Contexts/TreeContext";
 import Footer from "./Footer";
 import Header from "./Header";
 import PlayGround from "./PlayGround";
@@ -27,7 +28,11 @@ export default function Outline() {
       {/* background color */}
       <Header togglePage={togglePage}></Header>
       {page === "WeekBan" && <WeekBan></WeekBan>}
-      {page === "PlayGround" && <PlayGround></PlayGround>}
+      {page === "PlayGround" && (
+        <TreesProvider>
+          <PlayGround></PlayGround>
+        </TreesProvider>
+      )}
 
       <Footer></Footer>
     </div>

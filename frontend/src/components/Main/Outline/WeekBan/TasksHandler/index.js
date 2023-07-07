@@ -7,7 +7,8 @@ import TaskItem from "./TaskItem";
 import "./styles.css";
 
 export default function TasksHandler() {
-  const data = useData();
+  const contextPayload = useData();
+  const { data } = contextPayload;
   const { tasks } = data;
   // console.log("there are the tasks insideo of TasksHandler");
   // console.log(tasks);

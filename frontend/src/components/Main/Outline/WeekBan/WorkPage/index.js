@@ -1,10 +1,5 @@
 import React, { createContext, useState } from "react";
-import {
-  useBoard,
-  useBoardsUpdate,
-  useDragUpdateBoards,
-  useUpdateData,
-} from "../../../../../Contexts/DataContext";
+import { useData } from "../../../../../Contexts/DataContext";
 import { useUpdateModalTodos } from "../../../../../Contexts/OpenModalContext";
 import Board from "./Board";
 import "./styles.css";
@@ -12,11 +7,9 @@ import "./styles.css";
 export const dragContext = createContext();
 
 export default function WorkPage() {
-  const boards = useBoard();
-  const dragUpdateBoards = useDragUpdateBoards();
+  const contextPayload = useData();
+  const { boards, dragUpdateBoards, updateData, updateBoards } = contextPayload;
   const updateModalTodos = useUpdateModalTodos();
-  const updateData = useUpdateData();
-  const updateBoards = useBoardsUpdate();
 
   const [currentBoardId, setCurrentBoardId] = useState(null);
   const [currentToDoId, setCurrentToDoId] = useState(null);
@@ -24,7 +17,7 @@ export default function WorkPage() {
   function findParentWithClassName(element, className) {
     // if(element.className === "")
     // console.log("inside of function");
-    while (element.className && element.className != className)
+    while (element.className && element.className !== className)
       element = element.parentNode;
     return element;
   }

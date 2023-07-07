@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useUpdateData } from "../../../../../../Contexts/DataContext";
+import { useData } from "../../../../../../Contexts/DataContext";
 import {
   useModal,
   useModalUpdate,
@@ -14,7 +14,8 @@ export default function TaskItem({ task }) {
   const toggleModal = useModalUpdate();
   const prevTask = usePrevTask();
   const togglePrevTask = useUpdatePrevTask();
-  const updateData = useUpdateData();
+  const contextPayload = useData();
+  const { updateData } = contextPayload;
 
   const darkTheme = useSelector((state) => state.darkTheme);
   const { _id, taskTitle } = task;

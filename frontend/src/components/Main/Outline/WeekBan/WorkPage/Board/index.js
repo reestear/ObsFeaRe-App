@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import { useBoard } from "../../../../../../Contexts/DataContext";
+import { useData } from "../../../../../../Contexts/DataContext";
 import { dragContext } from "../../WorkPage";
 import BoardTodo from "./BoardTodo";
 import colorsDark from "./colorsDark.json";
@@ -8,7 +8,8 @@ import colorsLight from "./colorsLight.json";
 import "./styles.css";
 
 export default function Board({ boardTitle, boardId }) {
-  const boards = useBoard();
+  const contextPayload = useData();
+  const { boards } = contextPayload;
   const darkTheme = useSelector((state) => state.darkTheme);
   const colors = darkTheme ? colorsDark : colorsLight;
 

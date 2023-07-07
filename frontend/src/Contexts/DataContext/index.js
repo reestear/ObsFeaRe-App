@@ -8,33 +8,9 @@ import {
 } from "../Services";
 
 const dataContext = createContext();
-const dataUpdateContext = createContext();
-const sendUpdatedTaskContext = createContext();
-const deleteTaskContext = createContext();
-const boardContext = createContext();
-const dragUpdateBoardsContext = createContext();
-const boardsUpdateContext = createContext();
 
 export function useData() {
   return useContext(dataContext);
-}
-export function useUpdateData() {
-  return useContext(dataUpdateContext);
-}
-export function useSendUpdatedTask() {
-  return useContext(sendUpdatedTaskContext);
-}
-export function useDeleteTask() {
-  return useContext(deleteTaskContext);
-}
-export function useBoard() {
-  return useContext(boardContext);
-}
-export function useDragUpdateBoards() {
-  return useContext(dragUpdateBoardsContext);
-}
-export function useBoardsUpdate() {
-  return useContext(boardsUpdateContext);
 }
 
 export function DataProvider({ children }) {
@@ -69,15 +45,10 @@ export function DataProvider({ children }) {
     const todos = await dataGetTodos();
     const tasks = await dataGetTasks();
 
-    // console.log("someoefsefsef");
-    // console.log(weekTodos, activeTodos, progressTodos, doneTodos);
-
     await setData({
       todos: todos,
       tasks: tasks,
     });
-    // console.log("lskdjflsjdlfwlef");
-    // console.log(boards);
   }
 
   async function sendUpdatedTask(prevTask, modalTodos) {
@@ -105,8 +76,6 @@ export function DataProvider({ children }) {
     await dataUpdateBoards(merdegTodos);
     await updateData();
     await updateBoards();
-
-    // console.log("dragUpdateBoards lauched");
   }
 
   async function updateBoards() {
@@ -145,25 +114,19 @@ export function DataProvider({ children }) {
   useEffect(() => {
     updateData();
     updateBoards();
-    // console.log("INSIDE OF USEEFFECT");
-    // console.log(data.tasks);
   }, []);
 
+  const payload = {
+    data: data,
+    boards: boards,
+    updateBoards: updateBoards,
+    updateData: updateData,
+    sendUpdatedTask: sendUpdatedTask,
+    deleteTask: deleteTask,
+    dragUpdateBoards: dragUpdateBoards,
+  };
+
   return (
-    <dataContext.Provider value={data}>
-      <boardContext.Provider value={boards}>
-        <boardsUpdateContext.Provider value={updateBoards}>
-          <dataUpdateContext.Provider value={updateData}>
-            <sendUpdatedTaskContext.Provider value={sendUpdatedTask}>
-              <deleteTaskContext.Provider value={deleteTask}>
-                <dragUpdateBoardsContext.Provider value={dragUpdateBoards}>
-                  {children}
-                </dragUpdateBoardsContext.Provider>
-              </deleteTaskContext.Provider>
-            </sendUpdatedTaskContext.Provider>
-          </dataUpdateContext.Provider>
-        </boardsUpdateContext.Provider>
-      </boardContext.Provider>
-    </dataContext.Provider>
+    <dataContext.Provider value={payload}>{children}</dataContext.Provider>
   );
 }
