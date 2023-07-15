@@ -1,5 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { ChatHistoryProvider } from "../../../Contexts/ChatHistoryContext";
 import { TreesProvider } from "../../../Contexts/TreeContext";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -14,7 +15,13 @@ export default function Outline() {
 
   function togglePage(val) {
     setPage(val);
+    localStorage.setItem("page", JSON.stringify(val));
   }
+
+  useEffect(() => {
+    const pageLocal = localStorage.getItem("page");
+    if (pageLocal !== null) setPage(JSON.parse(pageLocal));
+  }, []);
 
   return (
     <div
@@ -30,7 +37,9 @@ export default function Outline() {
       {page === "WeekBan" && <WeekBan></WeekBan>}
       {page === "PlayGround" && (
         <TreesProvider>
-          <PlayGround></PlayGround>
+          <ChatHistoryProvider>
+            <PlayGround></PlayGround>
+          </ChatHistoryProvider>
         </TreesProvider>
       )}
 

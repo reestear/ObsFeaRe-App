@@ -1,9 +1,11 @@
 .footer{
     display: flex;
-    height: 3vh;
+    height: 3%;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 60px;
+    padding: 1% 60px;
+    z-index: 2;
+    position: relative;
 }
 .RightF p{
     margin: 5px;

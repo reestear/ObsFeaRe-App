@@ -52,6 +52,10 @@ export function TreesProvider({ children }) {
     }
     setTrees(copyTrees);
   }, [resTrees]);
+
+  const updateTrees = async () => {
+    await getTrees();
+  };
   // useEffect(() => {
   //   console.log("the whole updated trees: ");
   //   trees.forEach((tree) => {
@@ -61,6 +65,7 @@ export function TreesProvider({ children }) {
 
   const payload = {
     trees: trees,
+    updateTrees: updateTrees,
   };
 
   return (

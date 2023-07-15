@@ -228,3 +228,32 @@ export async function treesPull() {
       console.log(errMes);
     });
 }
+
+export async function generateTree(request) {
+  return await axios
+    .post(`http://localhost:8080/trees/gpt/new`, { request }, config)
+    .then(async (res) => {
+      const mes = await JSON.parse(res.request.response);
+      return mes.treeId;
+    })
+    .catch(async (err) => {
+      const errMes = await JSON.parse(err.request.response).message;
+
+      console.log("printing errMes: ");
+      console.log(errMes);
+    });
+}
+
+export async function getHistory() {
+  return await axios
+    .get(`http://localhost:8080/chatHistory`, config)
+    .then(async (res) => {
+      const mes = await JSON.parse(res.request.response);
+      return mes.chatHistory;
+    })
+    .catch(async (err) => {
+      const errMes = await JSON.parse(err.request.response).message;
+      console.log("printing errMes: ");
+      console.log(errMes);
+    });
+}

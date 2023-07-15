@@ -1,0 +1,11 @@
+.link{
+    stroke: black;
+}
+.highlighted{
+    fill: orange;
+}
+.node{
+    cursor: pointer;
+    margin: 5px;
+    box-shadow: 0px 0px 10.714285850524902px 0.8571428656578064px rgba(255, 255, 255, 0.50) inset;
+}

@@ -22,7 +22,7 @@ const taskSchema = new mongoose.Schema({
   },
   nodeId: {
     type: String,
-    required: true,
+    // required: true,
     default: null,
   },
 });
