@@ -4,7 +4,7 @@ import TreeInfo from "./TreeInfo";
 import TreeLayout from "./TreeLayout";
 import "./styles.css";
 
-const PlayGround = () => {
+const PlayGround = React.memo(() => {
   const [openChat, setOpenChat] = useState(false);
   const toggleOpenChat = () => {
     setOpenChat(!openChat);
@@ -42,6 +42,6 @@ const PlayGround = () => {
       <TreeInfo openTreeInfo={openTreeInfo} activeTree={activeTree}></TreeInfo>
     </div>
   );
-};
+});
 
 export default PlayGround;

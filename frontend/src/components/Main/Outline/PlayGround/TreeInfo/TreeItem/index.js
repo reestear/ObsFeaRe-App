@@ -3,7 +3,7 @@ import ColorNode from "../../TreeLayout/ColorNode.json";
 import "./styles.css";
 
 export default function TreeItem({ node, depth }) {
-  const marginLeft = `${depth * 40}px`;
+  const marginLeft = `${depth * 0}px`;
   const ItemColor = node.active
     ? ColorNode.ACTIVE_NODE
     : node.done

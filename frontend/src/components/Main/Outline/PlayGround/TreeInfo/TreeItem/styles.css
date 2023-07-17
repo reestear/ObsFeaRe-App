@@ -14,5 +14,4 @@
 .TreeItemChildren{
     display: flex;
     flex-direction: column;
-    padding-left: 0px;
 }
