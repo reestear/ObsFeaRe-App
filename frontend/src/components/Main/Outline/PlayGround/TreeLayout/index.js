@@ -1,12 +1,12 @@
 import * as d3 from "d3";
 import React, { useEffect, useRef, useState } from "react";
 import { useTrees } from "../../../../../Contexts/TreeContext";
-// import ColorNode from "./ColorNode.json"
+import ColorNode from "./ColorNode.json";
 import "./styles.css";
 
-const TreeLayout = () => {
+const TreeLayout = ({ toggleOpenTreeInfo, outsideToggleOpenTreeInfo }) => {
   const treesContext = useTrees();
-  const { trees } = treesContext;
+  const { trees, resTrees } = treesContext;
 
   const WIDTH = 1512;
   const HEIGHT = 800 * 0.94;
@@ -16,6 +16,22 @@ const TreeLayout = () => {
   const svgRef = useRef(null);
   const [panning, setPanning] = useState(false);
   let movedZoom = useRef(false);
+
+  const rectRef = useRef(null);
+
+  useEffect(() => {
+    // Everything around if statement
+    if (rectRef && rectRef.current) {
+      rectRef.current.addEventListener("click", (e) => {
+        // console.log("CLICKED ON RECT");
+        outsideToggleOpenTreeInfo();
+      });
+
+      // return () => {
+      //   rectRef.current.removeEventListener("click");
+      // };
+    }
+  }, [rectRef]);
 
   useEffect(() => {
     const svgContainer = d3.select(svgRef.current);
@@ -288,9 +304,9 @@ const TreeLayout = () => {
         .attr("r", nodeRadius)
         // .style("fill", (d) => (d.isRoot ? "#E51C1C" : "steelblue")) // Set different color for the root node
         .style("fill", (d) => {
-          if (d.isRoot) return "#E51C1C";
-          if (d.isLeaf) return "#BBAF40";
-          return "steelblue";
+          if (d.isRoot) return ColorNode.ROOT_NODE;
+          if (d.isLeaf) return ColorNode.LEAF_NODE;
+          return ColorNode.DEFAULT_NODE;
         })
         .style(
           "box-shadow",
@@ -299,13 +315,17 @@ const TreeLayout = () => {
         .attr("filter", "url(#inner-shadow)")
         .on("mouseover", function () {
           this.setAttribute("prev_fill", this.style.fill);
-          this.style.fill = "#EA8F3B";
+          this.style.fill = ColorNode.ACTIVE_NODE;
         })
         .on("mouseout", function () {
           this.style.fill = this.getAttribute("prev_fill");
         })
-        .on("click", function (d) {
-          console.log(d._id);
+        .on("click", async function (d) {
+          // console.log(d.nodeTitle);
+          const curTree = await resTrees.find((item) => item.treeId === treeId);
+
+          toggleOpenTreeInfo(curTree);
+          // console.log(tree.treeId);
         });
 
       // Append the title to the node
@@ -400,13 +420,13 @@ const TreeLayout = () => {
             result="hardAlpha"
           />
           <feMorphology
-            radius="1.8"
+            radius="1"
             operator="erode"
             in="SourceAlpha"
             result="effect1_innerShadow_354_131"
           />
           <feOffset />
-          <feGaussianBlur stdDeviation="6" />
+          <feGaussianBlur stdDeviation="5" />
           <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
           <feColorMatrix
             type="matrix"
@@ -420,7 +440,7 @@ const TreeLayout = () => {
         </filter>
       </defs>
 
-      <rect width="100%" height="100%" fill="#EAEAEA" />
+      <rect ref={rectRef} width="100%" height="100%" fill="#EAEAEA" />
       <g className="zoom-container">{/* Render your tree components here */}</g>
     </svg>
   );

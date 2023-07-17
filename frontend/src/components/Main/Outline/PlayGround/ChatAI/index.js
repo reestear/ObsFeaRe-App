@@ -44,9 +44,9 @@ export default function ChatAI({ openChat, toggleOpenChat }) {
 
   const animatedProps = useSpring({
     from: {
-      bottom: openChat ? "-37%" : "8.5%",
+      bottom: openChat ? "-36.9%" : "8.5%",
     },
-    bottom: openChat ? "8.5%" : "-37%",
+    bottom: openChat ? "8.5%" : "-36.9%",
     config: { mass: 1, tension: 100, friction: 20 },
   });
   const animatedShadow = useSpring({

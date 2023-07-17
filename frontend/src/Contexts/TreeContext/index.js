@@ -35,6 +35,7 @@ export function TreesProvider({ children }) {
   useEffect(() => {
     getTrees();
   }, []);
+
   useEffect(() => {
     let copyTrees = [];
     for (let treeInd in resTrees) {
@@ -66,6 +67,7 @@ export function TreesProvider({ children }) {
   const payload = {
     trees: trees,
     updateTrees: updateTrees,
+    resTrees: resTrees,
   };
 
   return (

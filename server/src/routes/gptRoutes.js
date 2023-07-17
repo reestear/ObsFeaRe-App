@@ -33,7 +33,7 @@ function generateContent(request) {
         }
       ]
     }
-    Also, remember that "children" should be an array!!!
+    Also, remember that "children" should be an array and that root shouldn't have any leaves!
 
     Wrap the json file which includes tree structure between keywords: !START! and !END!
     
@@ -52,7 +52,7 @@ router.post("/gpt/new", getUser, async (req, res) => {
     const content = generateContent(request);
 
     const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-16k",
+      model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: content }],
     });
 

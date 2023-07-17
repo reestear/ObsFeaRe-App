@@ -22,6 +22,11 @@ const nodeSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  focus: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   isRoot: {
     type: Boolean,
     required: true,
