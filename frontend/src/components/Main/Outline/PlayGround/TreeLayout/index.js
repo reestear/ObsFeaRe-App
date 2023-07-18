@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTrees } from "../../../../../Contexts/TreeContext";
 import ColorNode from "./ColorNode.json";
 import "./styles.css";
@@ -20,6 +20,22 @@ const TreeLayout = React.memo(
     let movedZoom = useRef(false);
 
     const rectRef = useRef(null);
+
+    // To get the inital zoom settings when mounting
+    const [initialZoomSettings, setInitialZoomSettings] = useState(null);
+    const [mounted, setMounted] = useState(true);
+
+    useEffect(() => {
+      // Fetch zoom settings from local storage
+      const storedZoomSettings = localStorage.getItem("zoomSettings");
+      if (storedZoomSettings) {
+        const zoomSettings = JSON.parse(storedZoomSettings);
+        const initialZoom = d3.zoomIdentity
+          .translate(+zoomSettings.x, +zoomSettings.y)
+          .scale(+zoomSettings.k);
+        setInitialZoomSettings(initialZoom);
+      }
+    }, []);
 
     // Listening for rectangle
     useEffect(() => {
@@ -82,34 +98,19 @@ const TreeLayout = React.memo(
         ])
         .filter(() => panning) // Disable zooming when panning is active
         .on("zoom", () => {
-          // const storedZoomSetttings = localStorage.getItem("zoomSettings");
-          // if (storedZoomSetttings !== null && !movedZoom.current) {
-          //   const zoomSettings = JSON.parse(storedZoomSetttings);
-          //   // transform.x = zoomSettings.x;
-          //   // transform.y = zoomSettings.y;
-          //   // transform.k = zoomSettings.k;
-          //   d3.event.transform.x = zoomSettings.x;
-          //   d3.event.transform.y = zoomSettings.y;
-          //   d3.event.transform.k = zoomSettings.k;
-          // }
-
           const { transform } = d3.event;
-
-          // console.log("this is d3.event.transform: ");
-          // console.log(d3.event.transform);
           zoomContainer.attr("transform", transform);
-
-          // const zoomSettings = {
-          //   x: transform.x,
-          //   y: transform.y,
-          //   k: transform.k,
-          // };
-          // localStorage.setItem("zoomSettings", JSON.stringify(zoomSettings));
-          // movedZoom.current = true;
+          localStorage.setItem("zoomSettings", JSON.stringify(transform));
         });
 
       // Apply the zoom behavior to the zoom container
       svgContainer.call(zoom);
+
+      // Check if there are initial zoom settings to apply
+      if (initialZoomSettings && mounted) {
+        svgContainer.call(zoom.transform, initialZoomSettings);
+        setMounted(false);
+      }
 
       // Listen for spacebar key events
       window.addEventListener("keydown", handleKeyDown);
@@ -275,9 +276,6 @@ const TreeLayout = React.memo(
               JSON.stringify(nodePositions)
             );
           } else {
-            // const nodePositions = {
-            //   treeId: curNodePositions,
-            // };
             const nodePositions = {};
             nodePositions[treeId] = curNodePositions;
             localStorage.setItem(
@@ -378,20 +376,56 @@ const TreeLayout = React.memo(
         });
       });
     }, [trees]);
-    // inner-shadow
+
+    // memoized inner shadow filter
+    // Pre-render the filter components outside the component to avoid unnecessary re-renders
+    const innerShadowFilter = useMemo(
+      () => (
+        // <svg width="0" height="0">
+        <defs>
+          <filter id="inner-shadow-filter">
+            {/* ... Your filter components ... */}
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend
+              mode="normal"
+              in="SourceGraphic"
+              in2="BackgroundImageFix"
+              result="shape"
+            />
+            <feColorMatrix
+              in="SourceAlpha"
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+              result="hardAlpha"
+            />
+            <feMorphology
+              radius="1"
+              operator="erode"
+              in="SourceAlpha"
+              result="effect1_innerShadow_354_131"
+            />
+            <feOffset />
+            <feGaussianBlur stdDeviation="5" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix
+              type="matrix"
+              values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"
+            />
+            <feBlend
+              mode="normal"
+              in2="shape"
+              result="effect1_innerShadow_354_131"
+            />
+          </filter>
+        </defs>
+        // </svg>
+      ),
+      []
+    );
+
     return (
       <svg ref={svgRef} width={WIDTH} height={HEIGHT}>
-        {/* <defs>
-          <filter
-            id="inner-shadow-filter"
-            x="-50%"
-            y="-50%"
-            width="200%"
-            height="200%"
-          >
-            <feGaussianBlur stdDeviation="1" />
-          </filter>
-        </defs> */}
+        {/* {innerShadowFilter} */}
         <rect ref={rectRef} width="100%" height="100%" fill="#EAEAEA" />
         <g className="zoom-container"></g>
       </svg>
