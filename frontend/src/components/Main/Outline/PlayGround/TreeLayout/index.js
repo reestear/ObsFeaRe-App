@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTrees } from "../../../../../Contexts/TreeContext";
 import ColorNode from "./ColorNode.json";
+import NodeToolkit from "./NodeToolkit";
 import "./styles.css";
 
 const TreeLayout = React.memo(
@@ -20,6 +21,22 @@ const TreeLayout = React.memo(
     let movedZoom = useRef(false);
 
     const rectRef = useRef(null);
+
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+    const [tooltipNode, setTooltipNode] = useState(null);
+    const [tooltipNodePosition, setTooltipNodePosition] = useState({
+      x: 0,
+      y: 0,
+    });
+
+    function handleTooltipEnter() {
+      setTooltipOpen(true);
+    }
+    function handleTooltipLeave() {
+      setTooltipOpen(false);
+    }
+
+    const [dragging, setDragging] = useState(false);
 
     // To get the inital zoom settings when mounting
     const [initialZoomSettings, setInitialZoomSettings] = useState(null);
@@ -182,6 +199,7 @@ const TreeLayout = React.memo(
       // Render the trees
       trees.forEach((tree) => {
         const { nodes, links, treeId } = tree;
+        // console.log(nodes);
 
         // Retrieve the node positions from localStorage
         const storedNodePositions = localStorage.getItem("nodePositions");
@@ -251,16 +269,22 @@ const TreeLayout = React.memo(
           if (!d3.event.active) simulation.alphaTarget(0.3).restart();
           d.fx = d.x;
           d.fy = d.y;
+
+          setDragging(true);
         }
         function dragged(d) {
           if (!d3.event.active) simulation.alphaTarget(0);
           d.fx = d3.event.x;
           d.fy = d3.event.y;
+
+          // setTooltipNode(null);
         }
         function dragended(d) {
           if (!d3.event.active) simulation.alphaTarget(0);
           d.fx = null;
           d.fy = null;
+
+          setDragging(false);
 
           // Store the updated node positions in localStorage
           const curNodePositions = {};
@@ -295,12 +319,32 @@ const TreeLayout = React.memo(
             return ColorNode.DEFAULT_NODE;
           })
           .attr("filter", "url(#inner-shadow-filter)")
-          .on("mouseover", function () {
+          .on("mouseenter", function (d) {
             this.setAttribute("prev_fill", this.style.fill);
             this.style.fill = ColorNode.ACTIVE_NODE;
+
+            // using custom method
+
+            const boundingRect = this.getBoundingClientRect();
+            const nodePosition = {
+              x: boundingRect.left + boundingRect.width / 2,
+              y: boundingRect.top + boundingRect.height / 2,
+            };
+
+            // Set the tooltip data and position based on the mouse cursor position
+            handleTooltipEnter();
+            setTooltipNode(d);
+            setTooltipNodePosition({ x: nodePosition.x, y: nodePosition.y });
+
+            // console.log(d);
+            // console.log(nodePosition);
           })
-          .on("mouseout", function () {
+          .on("mouseleave", function () {
             this.style.fill = this.getAttribute("prev_fill");
+
+            // Hide the tooltip when the mouse leaves the node
+            handleTooltipLeave();
+            setTooltipNode(null);
           })
           .on("click", async function () {
             const curTree = await resTrees.find(
@@ -424,11 +468,21 @@ const TreeLayout = React.memo(
     );
 
     return (
-      <svg ref={svgRef} width={WIDTH} height={HEIGHT}>
-        {/* {innerShadowFilter} */}
-        <rect ref={rectRef} width="100%" height="100%" fill="#EAEAEA" />
-        <g className="zoom-container"></g>
-      </svg>
+      <>
+        {tooltipOpen && !dragging && (
+          <NodeToolkit
+            node={tooltipNode}
+            nodePosition={tooltipNodePosition}
+            handleTooltipEnter={handleTooltipEnter}
+            handleTooltipLeave={handleTooltipLeave}
+          ></NodeToolkit>
+        )}
+        <svg ref={svgRef} width={WIDTH} height={HEIGHT}>
+          {/* {innerShadowFilter} */}
+          <rect ref={rectRef} width="100%" height="100%" fill="#EAEAEA" />
+          <g className="zoom-container"></g>
+        </svg>
+      </>
     );
   }
 );

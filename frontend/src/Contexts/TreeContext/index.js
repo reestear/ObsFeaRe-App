@@ -12,12 +12,16 @@ export function TreesProvider({ children }) {
   const [trees, setTrees] = useState([]);
 
   function depth_first_search(curNode, nodesArr, linksArr) {
-    const { children, ...withoutChildrenCurNode } = curNode;
-    // withoutChildrenCurNode.x = 0;
-    // withoutChildrenCurNode.y = 0;
-    withoutChildrenCurNode.fx = null;
-    withoutChildrenCurNode.fy = null;
-    nodesArr.push(withoutChildrenCurNode);
+    // const { children, ...withoutChildrenCurNode } = curNode;
+    // withoutChildrenCurNode.fx = null;
+    // withoutChildrenCurNode.fy = null;
+    // nodesArr.push(withoutChildrenCurNode);
+
+    // For without children just comment below code and uncomment above code
+    curNode.fx = null;
+    curNode.fy = null;
+    nodesArr.push(curNode);
+
     for (let childInd in curNode.children) {
       const child = curNode.children[childInd];
       linksArr.push({
