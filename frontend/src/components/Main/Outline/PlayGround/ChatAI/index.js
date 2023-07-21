@@ -119,7 +119,10 @@ export default function ChatAI({ openChat, toggleOpenChat }) {
             />
           </svg>
         </button>
-        <a.div className="ChatWindow" style={{ ...animatedShadow }}>
+        <a.div
+          className="ChatWindow"
+          // style={{ ...animatedShadow }} // revealing animation with drop shadow
+        >
           <div ref={overflowRef} className="ChatHistory">
             {chatHistory &&
               chatHistory.map((dialog) => (

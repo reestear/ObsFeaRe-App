@@ -28,6 +28,10 @@ const TreeLayout = React.memo(
       x: 0,
       y: 0,
     });
+    // const [tooltipRelNodePosition, setTooltipRelNodePosition] = useState({
+    //   x: 0,
+    //   y: 0,
+    // });
 
     function handleTooltipEnter() {
       setTooltipOpen(true);
@@ -62,10 +66,10 @@ const TreeLayout = React.memo(
           // console.log("CLICKED ON RECT");
           outsideToggleOpenTreeInfo();
         });
-
-        // return () => {
-        //   rectRef.current.removeEventListener("click");
-        // };
+        rectRef.current.addEventListener("mouseenter", (e) => {
+          console.log("mouse entered!");
+          handleTooltipLeave();
+        });
       }
     }, [rectRef]);
 
@@ -332,9 +336,11 @@ const TreeLayout = React.memo(
             };
 
             // Set the tooltip data and position based on the mouse cursor position
-            handleTooltipEnter();
-            setTooltipNode(d);
-            setTooltipNodePosition({ x: nodePosition.x, y: nodePosition.y });
+            if (d3.event.altKey || d3.event.metaKey) {
+              handleTooltipEnter();
+              setTooltipNode(d);
+              setTooltipNodePosition({ x: nodePosition.x, y: nodePosition.y });
+            }
 
             // console.log(d);
             // console.log(nodePosition);
@@ -343,8 +349,8 @@ const TreeLayout = React.memo(
             this.style.fill = this.getAttribute("prev_fill");
 
             // Hide the tooltip when the mouse leaves the node
-            handleTooltipLeave();
-            setTooltipNode(null);
+            // handleTooltipLeave();
+            // setTooltipNode(null);
           })
           .on("click", async function () {
             const curTree = await resTrees.find(
@@ -469,12 +475,13 @@ const TreeLayout = React.memo(
 
     return (
       <>
-        {tooltipOpen && !dragging && (
+        {tooltipOpen && !dragging && !panning && (
           <NodeToolkit
             node={tooltipNode}
             nodePosition={tooltipNodePosition}
             handleTooltipEnter={handleTooltipEnter}
             handleTooltipLeave={handleTooltipLeave}
+            tooltipOpen={tooltipOpen}
           ></NodeToolkit>
         )}
         <svg ref={svgRef} width={WIDTH} height={HEIGHT}>
