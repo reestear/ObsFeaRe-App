@@ -16,9 +16,9 @@
     align-items: center;
     background-color: red;
     border-radius: 3px;
-    padding: 2px 5px;
+    padding: 5px 5px;
     /* width: 55px; */
-    height: 24px;
+    /* height: 24px; */
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
 }

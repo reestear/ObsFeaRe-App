@@ -32,7 +32,14 @@ export default function TreeItem({ node, depth }) {
         >
           <circle cx="4.25" cy="4.5" r="4.25" fill={ItemColor} />
         </svg>
-        <p style={{ color: ItemColor }}>{node.nodeTitle}</p>
+        <p
+          style={{
+            color: ItemColor,
+            textDecoration: node.done ? "line-through" : "",
+          }}
+        >
+          {node.nodeTitle}
+        </p>
       </div>
       {node.children.length > 0 && (
         <ul className="TreeItemChildren">

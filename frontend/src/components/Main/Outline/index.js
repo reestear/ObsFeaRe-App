@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ChatHistoryProvider } from "../../../Contexts/ChatHistoryContext";
+import { NotifyInfoProvider } from "../../../Contexts/NotifyInfoContext";
 import { TreesProvider } from "../../../Contexts/TreeContext";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -38,7 +39,9 @@ export default function Outline() {
       {page === "PlayGround" && (
         <TreesProvider>
           <ChatHistoryProvider>
-            <PlayGround></PlayGround>
+            <NotifyInfoProvider>
+              <PlayGround></PlayGround>
+            </NotifyInfoProvider>
           </ChatHistoryProvider>
         </TreesProvider>
       )}

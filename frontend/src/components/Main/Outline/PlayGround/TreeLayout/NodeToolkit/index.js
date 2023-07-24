@@ -1,6 +1,8 @@
 import { animated as a, useSpring } from "@react-spring/web";
 import React from "react";
-import { ReactComponent as BULLET } from "../../../../../../assets/Icons/bullet.svg";
+import { deleteNode } from "../../../../../../Contexts/Services";
+import { useTrees } from "../../../../../../Contexts/TreeContext";
+import ColorNode from "../ColorNode.json";
 import "./styles.css";
 
 export default function NodeToolkit({
@@ -10,6 +12,9 @@ export default function NodeToolkit({
   handleTooltipLeave,
   tooltipOpen,
 }) {
+  const treesContext = useTrees();
+  const { updateTrees } = treesContext;
+
   const animatedProps = useSpring({
     from: {
       transform: tooltipOpen ? "scale(0, 0)" : "scale(1, 1)",
@@ -17,6 +22,12 @@ export default function NodeToolkit({
     transform: tooltipOpen ? "scale(1, 1)" : "scale(0, 0)",
     config: { mass: 1, tension: 100, friction: 20 },
   });
+
+  const handleDeleteClick = async () => {
+    await deleteNode(node._id);
+    await updateTrees();
+    handleTooltipLeave();
+  };
 
   return (
     <a.div
@@ -44,12 +55,62 @@ export default function NodeToolkit({
         </div>
         <div className="NodeToolkitBelow">
           <div className="NodeToolkilChildren">
-            {node.children.map((child) => (
-              <div className="NodeToolkitChildrenItem">
-                <BULLET></BULLET>
-                <p>{child.nodeTitle}</p>
-              </div>
-            ))}
+            {node.isLeaf && node.taskId
+              ? node.taskId.todos.map((child) => (
+                  <div className="NodeToolkitChildrenItem">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="7"
+                      height="8"
+                      viewBox="0 0 7 8"
+                      fill="none"
+                    >
+                      <circle
+                        cx="3.5"
+                        cy="4"
+                        r="3.5"
+                        fill={
+                          child.done
+                            ? ColorNode.DONE_NODE
+                            : ColorNode.DEFAULT_DARK
+                        }
+                      />
+                    </svg>
+                    <p
+                      style={{
+                        color: child.done ? ColorNode.DONE_NODE : "",
+                        textDecoration: child.done ? "line-through" : "",
+                      }}
+                    >
+                      {child.todoTitle}
+                    </p>
+                  </div>
+                ))
+              : node.children.map((child) => (
+                  <div className="NodeToolkitChildrenItem">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="7"
+                      height="8"
+                      viewBox="0 0 7 8"
+                      fill="none"
+                    >
+                      <circle
+                        cx="3.5"
+                        cy="4"
+                        r="3.5"
+                        fill={
+                          child.done
+                            ? ColorNode.DONE_NODE
+                            : ColorNode.DEFAULT_DARK
+                        }
+                      />
+                    </svg>
+                    <p style={{ color: child.done ? ColorNode.DONE_NODE : "" }}>
+                      {child.nodeTitle}
+                    </p>
+                  </div>
+                ))}
           </div>
           <div className="NodeTolkitButtons">
             {node.isLeaf && (
@@ -177,7 +238,10 @@ export default function NodeToolkit({
               </svg>
               Append
             </button>
-            <button style={{ backgroundColor: "#DF4B41" }}>
+            <button
+              style={{ backgroundColor: "#DF4B41" }}
+              onClick={async () => await handleDeleteClick()}
+            >
               <svg
                 width="12"
                 height="12"

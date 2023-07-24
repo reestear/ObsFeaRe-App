@@ -9,6 +9,10 @@ const router = express.Router();
 async function populateTree(rootNode) {
   try {
     await rootNode.populate("children");
+    if (rootNode.isLeaf) {
+      await rootNode.populate("taskId");
+      if (rootNode.taskId) await rootNode.taskId.populate("todos");
+    }
 
     for (const child in rootNode.children) {
       await populateTree(rootNode.children[child]);
@@ -99,33 +103,6 @@ router.post("/new", getUser, async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.status(501).json({ message: "Something Went Wrong in the Server" });
-  }
-});
-
-async function deleteTree(curNodeId) {
-  const curNode = await Node.findById(curNodeId);
-
-  if (curNode.children.length == 0) {
-    // leaf
-    await Node.deleteOne({ _id: curNodeId });
-    return;
-  }
-  for (let childInd in curNode.children) {
-    const childId = curNode.children[childInd];
-    deleteTree();
-  }
-}
-
-// deleting the tree
-router.delete("/delete/:treeId", getUser, async (req, res) => {
-  try {
-    const { treeId } = req.header;
-    const userId = req.userId;
-  } catch (err) {
-    console.log(err.message);
-    res.status(201).json({
-      message: "Something Went Wrong in the Server",
-    });
   }
 });
 

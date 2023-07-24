@@ -234,7 +234,26 @@ export async function generateTree(request) {
     .post(`http://localhost:8080/trees/gpt/new`, { request }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
-      return mes.treeId;
+      return { status: true, treeId: mes.treeId };
+    })
+    .catch(async (err) => {
+      const errMes = await JSON.parse(err.request.response).message;
+
+      console.log("printing errMes: ");
+      console.log(errMes);
+      return {
+        status: false,
+        message: errMes,
+      };
+    });
+}
+
+export async function deleteNode(nodeId) {
+  return await axios
+    .post(`http://localhost:8080/nodes/delete`, { nodeId }, config)
+    .then(async (res) => {
+      const mes = await JSON.parse(res.request.response);
+      return mes.message;
     })
     .catch(async (err) => {
       const errMes = await JSON.parse(err.request.response).message;
@@ -255,5 +274,26 @@ export async function getHistory() {
       const errMes = await JSON.parse(err.request.response).message;
       console.log("printing errMes: ");
       console.log(errMes);
+    });
+}
+
+export async function setFocusOnNode(nodeId) {
+  return await axios
+    .post(`http://localhost:8080/nodes/focus`, { nodeId }, config)
+    .then(async (res) => {
+      const mes = await JSON.parse(res.request.response);
+      return {
+        status: true,
+        message: mes.message,
+      };
+    })
+    .catch(async (err) => {
+      const errMes = await JSON.parse(err.request.response).message;
+      console.log("printing errMes: ");
+      console.log(errMes);
+      return {
+        status: false,
+        message: errMes,
+      };
     });
 }

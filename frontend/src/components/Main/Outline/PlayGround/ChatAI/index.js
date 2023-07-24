@@ -6,32 +6,34 @@ import "react-toastify/dist/ReactToastify.css";
 import { useChatHistory } from "../../../../../Contexts/ChatHistoryContext";
 import { generateTree } from "../../../../../Contexts/Services";
 import { useTrees } from "../../../../../Contexts/TreeContext";
+import { ReactComponent as SUCCESS } from "../../../../../assets/Icons/Success.svg";
 import { ReactComponent as WARNING } from "../../../../../assets/Icons/Warning.svg";
 import ChatDialog from "./ChatDIalog";
 import "./styles.css";
 
-export default function ChatAI({ openChat, toggleOpenChat }) {
+const ChatAI = ({ openChat, toggleOpenChat }) => {
   const treesContext = useTrees();
   const { updateTrees } = treesContext;
   const chatHistoryContext = useChatHistory();
   const { chatHistory, updateChatHistory } = chatHistoryContext;
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const loading = useRef(false);
 
   const overflowRef = useRef(null);
 
   useEffect(() => {
-    scrollToBottom();
-  });
+    setTimeout(() => scrollToBottom(), 1000);
+  }, [overflowRef]);
 
   const scrollToBottom = () => {
     const elem = overflowRef.current;
     if (elem) elem.scrollTop = elem.scrollHeight;
   };
 
-  const notifyError = () => {
-    toast.warning("Invalid Request...", {
-      icon: <WARNING></WARNING>,
+  const notifyInfo = ({ message, status }) => {
+    toast.warning(message, {
+      icon: status ? <SUCCESS></SUCCESS> : <WARNING></WARNING>,
       position: "top-center",
       autoClose: 2000,
       hideProgressBar: false,
@@ -64,14 +66,25 @@ export default function ChatAI({ openChat, toggleOpenChat }) {
     let req = request;
     req = req.trim();
     if (req === "") {
-      notifyError();
+      notifyInfo({ message: "Invalid Request...", status: false });
       return;
     }
-    setLoading(true);
-    await generateTree(req);
+    loading.current = true;
+    const resStatus = await generateTree(req).then((res) => {
+      if (!res.status) {
+        notifyInfo({
+          message: "Server Error: Please, try again.",
+          status: false,
+        });
+      }
+      return res.status;
+    });
+    console.log("resStatus : " + resStatus);
     await updateTrees();
     await updateChatHistory();
-    setLoading(false);
+    if (resStatus)
+      notifyInfo({ message: "Successfully created.", status: true });
+    loading.current = false;
     scrollToBottom();
   };
 
@@ -135,9 +148,9 @@ export default function ChatAI({ openChat, toggleOpenChat }) {
           <div className="ChatRequest">
             <input
               id="requestInput"
-              style={{ caretColor: loading ? "transparent" : "black" }}
-              placeholder={loading ? "Waiting..." : "Send request..."}
-              value={loading ? "" : request}
+              style={{ caretColor: loading.current ? "transparent" : "black" }}
+              placeholder={loading.current ? "Waiting..." : "Send request..."}
+              value={loading.current ? "" : request}
               onKeyDown={(e) => e.stopPropagation()}
               onChange={(e) => {
                 setRequest(e.target.value);
@@ -145,10 +158,10 @@ export default function ChatAI({ openChat, toggleOpenChat }) {
             />
 
             <div style={{ backgroundColor: "transparent" }}>
-              {loading ? (
+              {loading.current ? (
                 <div style={{ paddingLeft: "2px" }}>
                   <CircleLoader
-                    loading={loading}
+                    loading={loading.current}
                     color="#292D32"
                     size={15}
                   ></CircleLoader>
@@ -174,4 +187,6 @@ export default function ChatAI({ openChat, toggleOpenChat }) {
       </a.div>
     </>
   );
-}
+};
+
+export default React.memo(ChatAI);

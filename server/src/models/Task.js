@@ -11,6 +11,12 @@ const taskSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  todos: [
+    {
+      type: String,
+      ref: "ToDo",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

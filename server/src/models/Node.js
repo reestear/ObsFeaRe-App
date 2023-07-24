@@ -11,6 +11,11 @@ const nodeSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  taskId: {
+    type: String,
+    ref: "Task",
+    default: null,
+  },
   children: [
     {
       type: String,

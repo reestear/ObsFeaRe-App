@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTrees } from "../../../../../Contexts/TreeContext";
 import ColorNode from "./ColorNode.json";
 import NodeToolkit from "./NodeToolkit";
@@ -67,7 +67,7 @@ const TreeLayout = React.memo(
           outsideToggleOpenTreeInfo();
         });
         rectRef.current.addEventListener("mouseenter", (e) => {
-          console.log("mouse entered!");
+          // console.log("mouse entered!");
           handleTooltipLeave();
         });
       }
@@ -319,10 +319,12 @@ const TreeLayout = React.memo(
           .attr("r", nodeRadius)
           .style("fill", (d) => {
             if (d.isRoot) return ColorNode.ROOT_NODE;
-            if (d.isLeaf) return ColorNode.LEAF_NODE;
+            else if (d.focus) return ColorNode.FOCUS_NODE;
+            else if (d.done) return ColorNode.DONE_NODE;
+            else if (d.isLeaf) return ColorNode.LEAF_NODE;
             return ColorNode.DEFAULT_NODE;
           })
-          .attr("filter", "url(#inner-shadow-filter)")
+          .attr("filter", "url(#drop-shadow-filter)")
           .on("mouseenter", function (d) {
             this.setAttribute("prev_fill", this.style.fill);
             this.style.fill = ColorNode.ACTIVE_NODE;
@@ -427,51 +429,51 @@ const TreeLayout = React.memo(
       });
     }, [trees]);
 
-    // memoized inner shadow filter
-    // Pre-render the filter components outside the component to avoid unnecessary re-renders
-    const innerShadowFilter = useMemo(
-      () => (
-        // <svg width="0" height="0">
-        <defs>
-          <filter id="inner-shadow-filter">
-            {/* ... Your filter components ... */}
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-            <feBlend
-              mode="normal"
-              in="SourceGraphic"
-              in2="BackgroundImageFix"
-              result="shape"
-            />
-            <feColorMatrix
-              in="SourceAlpha"
-              type="matrix"
-              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-              result="hardAlpha"
-            />
-            <feMorphology
-              radius="1"
-              operator="erode"
-              in="SourceAlpha"
-              result="effect1_innerShadow_354_131"
-            />
-            <feOffset />
-            <feGaussianBlur stdDeviation="5" />
-            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-            <feColorMatrix
-              type="matrix"
-              values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"
-            />
-            <feBlend
-              mode="normal"
-              in2="shape"
-              result="effect1_innerShadow_354_131"
-            />
-          </filter>
-        </defs>
-        // </svg>
-      ),
-      []
-    );
+    // // memoized inner shadow filter
+    // // Pre-render the filter components outside the component to avoid unnecessary re-renders
+    // const innerShadowFilter = useMemo(
+    //   () => (
+    //     // <svg width="0" height="0">
+    //     <defs>
+    //       <filter id="inner-shadow-filter">
+    //         {/* ... Your filter components ... */}
+    //         <feFlood flood-opacity="0" result="BackgroundImageFix" />
+    //         <feBlend
+    //           mode="normal"
+    //           in="SourceGraphic"
+    //           in2="BackgroundImageFix"
+    //           result="shape"
+    //         />
+    //         <feColorMatrix
+    //           in="SourceAlpha"
+    //           type="matrix"
+    //           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+    //           result="hardAlpha"
+    //         />
+    //         <feMorphology
+    //           radius="1"
+    //           operator="erode"
+    //           in="SourceAlpha"
+    //           result="effect1_innerShadow_354_131"
+    //         />
+    //         <feOffset />
+    //         <feGaussianBlur stdDeviation="5" />
+    //         <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+    //         <feColorMatrix
+    //           type="matrix"
+    //           values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"
+    //         />
+    //         <feBlend
+    //           mode="normal"
+    //           in2="shape"
+    //           result="effect1_innerShadow_354_131"
+    //         />
+    //       </filter>
+    //     </defs>
+    //     // </svg>
+    //   ),
+    //   []
+    // );
 
     return (
       <>
@@ -485,7 +487,24 @@ const TreeLayout = React.memo(
           ></NodeToolkit>
         )}
         <svg ref={svgRef} width={WIDTH} height={HEIGHT}>
-          {/* {innerShadowFilter} */}
+          {/* {nodeFilter} */}
+          {/* <defs>
+            <filter
+              id="drop-shadow-filter"
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
+            >
+              <feDropShadow
+                dx="0"
+                dy="0"
+                stdDeviation="3"
+                flood-color="black"
+                flood-opacity="0.4"
+              />
+            </filter>
+          </defs> */}
           <rect ref={rectRef} width="100%" height="100%" fill="#EAEAEA" />
           <g className="zoom-container"></g>
         </svg>

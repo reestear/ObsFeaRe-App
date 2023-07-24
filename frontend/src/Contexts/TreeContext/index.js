@@ -41,6 +41,9 @@ export function TreesProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    // console.log("trees:");
+    // console.log(resTrees);
+
     let copyTrees = [];
     for (let treeInd in resTrees) {
       const tree = resTrees[treeInd];

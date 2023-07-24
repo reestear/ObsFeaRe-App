@@ -3,7 +3,7 @@ import React from "react";
 import TreeItem from "./TreeItem";
 import "./styles.css";
 
-export default function TreeInfo({ openTreeInfo, activeTree }) {
+function TreeInfo({ openTreeInfo, activeTree }) {
   activeTree && console.log("Updated activeTree.treeId: " + activeTree.treeId);
   const animatedProps = useSpring({
     from: {
@@ -33,3 +33,5 @@ export default function TreeInfo({ openTreeInfo, activeTree }) {
     </a.div>
   );
 }
+
+export default React.memo(TreeInfo);

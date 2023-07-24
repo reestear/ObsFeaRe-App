@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const Tree = require("../models/Tree");
 const Node = require("../models/Node");
 const { getUser } = require("../middlewares/authMiddleware");
+const { deleteTask } = require("../middlewares/taskMiddleware");
+const Task = require("../models/Task");
 
 const router = express.Router();
 
@@ -30,6 +32,75 @@ router.post("/new", getUser, async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.status(501).json({ message: "Something Went Wrong in the Server" });
+  }
+});
+
+async function deleteSubNode(curNodeId, userId) {
+  const curNode = await Node.findById(curNodeId);
+  if (!curNode) return;
+
+  if (curNode.children.length == 0) {
+    // leaf
+    if (curNode.taskId) await deleteTask(curNode.taskId, userId);
+    await Node.deleteOne({ _id: curNodeId });
+    return;
+  }
+  for (let childInd in curNode.children) {
+    const childId = curNode.children[childInd];
+    deleteSubNode(childId, userId);
+  }
+  await Node.deleteOne({ _id: curNodeId });
+}
+
+// deleting the subNode
+router.post("/delete", getUser, async (req, res) => {
+  try {
+    const { nodeId } = req.body;
+    const userId = req.userId;
+    // console.log(nodeId);
+
+    await deleteSubNode(nodeId, userId);
+    const tree = await Tree.findOne({ nodeId: nodeId });
+    if (tree) await Tree.deleteOne({ _id: tree._id });
+
+    res.status(201).json({
+      message: "Successfully deleted",
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({
+      message: "Something Went Wrong in the Server",
+    });
+  }
+});
+
+// set Focus to the Leaf node
+router.post("/focus", getUser, async (req, res) => {
+  try {
+    const { nodeId } = req.body;
+    const userId = req.userId;
+    const node = await Node.findById(nodeId);
+
+    await Task.create({
+      taskTitle: node.nodeTitle,
+      userId: userId,
+      isNode: true,
+      nodeId: nodeId,
+    });
+    const taskId = (await Task.findOne({}, {}, { sort: { createdAt: -1 } }))
+      ._id;
+
+    node.focus = true;
+    node.taskId = taskId.toString();
+    await node.save();
+    res.status(201).json({
+      message: "Successfully set Focus",
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({
+      message: "Something Went Wrong in the Server",
+    });
   }
 });
 

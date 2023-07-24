@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Task = require("../models/Task");
 const ToDo = require("../models/ToDo");
 const { getUser } = require("../middlewares/authMiddleware");
+const { deleteTask } = require("../middlewares/taskMiddleware");
 
 const router = express.Router();
 
@@ -48,7 +49,8 @@ router.post("/:taskId/:taskTitle", getUser, async (req, res) => {
 
     await ToDo.deleteMany({ taskId: taskId, userId: userId });
 
-    todos.forEach(async (todo) => {
+    const todoArr = [];
+    const promises = todos.map(async (todo) => {
       const { boardId, done, todoTitle, order } = todo;
       const repTodo = {
         todoTitle: todoTitle,
@@ -59,8 +61,21 @@ router.post("/:taskId/:taskTitle", getUser, async (req, res) => {
         order: order,
       };
 
-      await ToDo.create(repTodo);
+      const lastToDo = await ToDo.create(repTodo);
+      todoArr.push(lastToDo._id);
+      return lastToDo._id;
     });
+
+    Promise.all(promises)
+      .then(async () => {
+        // console.log("todoArr : " + todoArr);
+        task.todos = todoArr;
+        await task.save();
+        // Continue with the rest of your code that depends on todoArr
+      })
+      .catch((error) => {
+        console.error("Error with todos:", error);
+      });
 
     // console.log(await ToDo.find({ taskId: taskId, userId: userId }));
 
@@ -76,8 +91,9 @@ router.delete("/:taskId", getUser, async (req, res) => {
   // Delete task logic
   try {
     const { taskId } = req.params;
-    await ToDo.deleteMany({ userId: req.userId, taskId: taskId });
-    await Task.deleteOne({ _id: taskId, userId: req.userId });
+    // await ToDo.deleteMany({ userId: req.userId, taskId: taskId });
+    // await Task.deleteOne({ _id: taskId, userId: req.userId });
+    await deleteTask(taskId, req.userId);
 
     res.json({ message: "Successfully deleted the Task" });
   } catch (err) {

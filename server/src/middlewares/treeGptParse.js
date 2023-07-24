@@ -22,6 +22,7 @@ async function parseNodeDFS(node, depth) {
       const childId = await parseNodeDFS(child, depth + 1);
       children.push(childId);
     }
+    console.log(children);
     await Node.create({
       nodeTitle: node.title,
       userId: userId,
