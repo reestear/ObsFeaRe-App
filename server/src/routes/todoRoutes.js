@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const ToDo = require("../models/ToDo");
 const { getUser } = require("../middlewares/authMiddleware");
+const {
+  check_tree_for_done,
+} = require("../services/service_check_tree_for_done");
 
 const router = express.Router();
 
@@ -30,14 +33,18 @@ router.post("/boardsUpdate", getUser, async (req, res) => {
   // Update boards logic
   try {
     const { mergedTodos } = req.body;
+    const treeId = mergedTodos[0].treeId;
 
     await mergedTodos.forEach(async (item) => {
       const todo = await ToDo.findById(item._id);
       todo.order = item.order;
       todo.boardId = item.boardId;
       todo.done = item.done;
+      todo.treeId = item.treeId;
       await todo.save();
     });
+
+    await check_tree_for_done(treeId);
 
     res.json({ message: "Successfully updated Boards" });
   } catch (err) {
@@ -57,6 +64,9 @@ router.post("/:todoId", getUser, async (req, res) => {
     todo.done = !todo.done;
 
     await todo.save();
+
+    await check_tree_for_done(todo.treeId);
+
     res.json({ message: "Successfully Toggled the ToDo" });
   } catch (err) {
     console.log(err);

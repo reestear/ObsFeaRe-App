@@ -5,5 +5,6 @@
     "DONE_NODE": "#28924C",
     "ROOT_NODE": "#A52798",
     "DEFAULT_NODE": "#009EE1",
-    "DEFAULT_DARK": "#2D2D2D"
+    "DEFAULT_DARK": "#2D2D2D",
+    "DEFAULT_LIGHT": "#EAEAEA"
 }

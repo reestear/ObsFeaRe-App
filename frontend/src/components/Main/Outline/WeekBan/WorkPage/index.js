@@ -28,8 +28,8 @@ export default function WorkPage() {
     // console.log(e.target);
     const parentDiv = findParentWithClassName(e.target, "boardTodo");
     // console.log(e.target.parentNode.className);
-    console.log("parentDiv over : ");
-    console.log(parentDiv);
+    // console.log("parentDiv over : ");
+    // console.log(parentDiv);
     if (parentDiv.className && parentDiv.className === "boardTodo")
       parentDiv.style.boxShadow = "0 3px 1px #1B79BE";
   }
@@ -42,7 +42,7 @@ export default function WorkPage() {
   }
   function dragStartHandler(e, boardId, todoId) {
     // console.log(`starting with boardId: ${boardId} and todoId: ${todoId}`);
-    console.log(e.target.className);
+    // console.log(e.target.className);
     setCurrentBoardId(boardId);
     setCurrentToDoId(todoId);
     e.target.style.opacity = "75%";
@@ -60,8 +60,8 @@ export default function WorkPage() {
     e.preventDefault();
 
     const parentDiv = findParentWithClassName(e.target, "boardTodo");
-    console.log("dropping parentDiv: ");
-    console.log(parentDiv);
+    // console.log("dropping parentDiv: ");
+    // console.log(parentDiv);
     parentDiv.style.boxShadow = "none";
 
     // console.log("before changes");

@@ -253,13 +253,17 @@ export async function deleteNode(nodeId) {
     .post(`http://localhost:8080/nodes/delete`, { nodeId }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
-      return mes.message;
+      return { status: true, message: mes.message };
     })
     .catch(async (err) => {
       const errMes = await JSON.parse(err.request.response).message;
 
       console.log("printing errMes: ");
       console.log(errMes);
+      return {
+        status: false,
+        message: errMes,
+      };
     });
 }
 

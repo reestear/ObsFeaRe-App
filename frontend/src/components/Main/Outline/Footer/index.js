@@ -68,7 +68,7 @@ export default function Footer() {
       </div>
       <div className="RightF easeTransition">
         <p style={{ color: darkTheme ? "white" : "black" }}>
-          Made with nFactorial in 2023 🖤
+          Made with blood and tears 🧑‍🦽👨‍👨‍👦‍👦👨‍❤️‍👨
         </p>
       </div>
     </div>

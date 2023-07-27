@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import { ChatHistoryProvider } from "../../../Contexts/ChatHistoryContext";
 import { NotifyInfoProvider } from "../../../Contexts/NotifyInfoContext";
 import { TreesProvider } from "../../../Contexts/TreeContext";
@@ -7,12 +8,18 @@ import Footer from "./Footer";
 import Header from "./Header";
 import PlayGround from "./PlayGround";
 import WeekBan from "./WeekBan";
+import "./styles.css";
 
 export const PageContext = createContext();
 
 export default function Outline() {
   const darkTheme = useSelector((state) => state.darkTheme);
   const [page, setPage] = useState("WeekBan");
+
+  const [openChat, setOpenChat] = useState(false);
+  const toggleOpenChat = () => {
+    setOpenChat(!openChat);
+  };
 
   function togglePage(val) {
     setPage(val);
@@ -29,8 +36,6 @@ export default function Outline() {
       className="Outline easeTransition"
       style={{
         backgroundColor: darkTheme ? "#181818" : "#EAEAEA",
-        width: "1512px",
-        overflow: "hidden",
       }}
     >
       {/* background color */}
@@ -40,7 +45,12 @@ export default function Outline() {
         <TreesProvider>
           <ChatHistoryProvider>
             <NotifyInfoProvider>
+              <ToastContainer></ToastContainer>
               <PlayGround></PlayGround>
+              {/* <ChatAI
+                openChat={openChat}
+                toggleOpenChat={toggleOpenChat}
+              ></ChatAI> */}
             </NotifyInfoProvider>
           </ChatHistoryProvider>
         </TreesProvider>

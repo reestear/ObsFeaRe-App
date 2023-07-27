@@ -42,7 +42,8 @@ export default function Board({ boardTitle, boardId }) {
               )
           )}
         <div
-          style={{ height: "350px", width: "310px" }}
+          className="BoardEmptyField"
+          style={{ height: "100%", width: "100%" }}
           onDragOver={(e) => dragOverHandler(e)}
           onDrop={(e) => dropCardHandler(e, boardId)}
         ></div>

@@ -1,8 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import ColorNode from "../../TreeLayout/ColorNode.json";
 import "./styles.css";
 
 export default function TreeItem({ node, depth }) {
+  const darkTheme = useSelector((state) => state.darkTheme);
   const marginLeft = `${depth * 0}px`;
   const ItemColor = node.active
     ? ColorNode.ACTIVE_NODE
@@ -12,6 +14,8 @@ export default function TreeItem({ node, depth }) {
     ? ColorNode.FOCUS_NODE
     : node.isLeaf
     ? ColorNode.LEAF_NODE
+    : darkTheme
+    ? "white"
     : "black";
 
   return (

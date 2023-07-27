@@ -1,6 +1,12 @@
 import { animated as a, useSpring } from "@react-spring/web";
 import React from "react";
-import { deleteNode } from "../../../../../../Contexts/Services";
+import { useSelector } from "react-redux";
+import { useData } from "../../../../../../Contexts/DataContext";
+import { useNotifyInfo } from "../../../../../../Contexts/NotifyInfoContext";
+import {
+  deleteNode,
+  setFocusOnNode,
+} from "../../../../../../Contexts/Services";
 import { useTrees } from "../../../../../../Contexts/TreeContext";
 import ColorNode from "../ColorNode.json";
 import "./styles.css";
@@ -12,8 +18,14 @@ export default function NodeToolkit({
   handleTooltipLeave,
   tooltipOpen,
 }) {
+  const darkTheme = useSelector((state) => state.darkTheme);
+
   const treesContext = useTrees();
   const { updateTrees } = treesContext;
+  const notifyInfoContext = useNotifyInfo();
+  const { notifyInfo } = notifyInfoContext;
+  const dataContext = useData();
+  const { updateData, updateBoards } = dataContext;
 
   const animatedProps = useSpring({
     from: {
@@ -24,9 +36,48 @@ export default function NodeToolkit({
   });
 
   const handleDeleteClick = async () => {
-    await deleteNode(node._id);
-    await updateTrees();
     handleTooltipLeave();
+    await deleteNode(node._id).then(async (res) => {
+      if (res.status) {
+        notifyInfo({
+          message: "Successfully Deleted...",
+          status: true,
+        });
+        await updateTrees();
+        await updateData();
+        await updateBoards();
+      } else {
+        notifyInfo({
+          message: "Server Error: Please, try again...",
+          status: false,
+        });
+      }
+    });
+  };
+  const handleFocusClick = async () => {
+    handleTooltipLeave();
+    if (node.focus) {
+      notifyInfo({
+        message: "Already on Focus...",
+        status: false,
+      });
+      return;
+    }
+    await setFocusOnNode(node._id).then(async (res) => {
+      if (res.status) {
+        notifyInfo({
+          message: res.message,
+          status: true,
+        });
+        await updateTrees();
+        await updateData();
+      } else {
+        notifyInfo({
+          message: "Server Error: Please, try again...",
+          status: false,
+        });
+      }
+    });
   };
 
   return (
@@ -43,6 +94,12 @@ export default function NodeToolkit({
     >
       <div
         className="NodeToolkit"
+        style={{
+          backgroundColor: darkTheme ? "#505050" : "#FFF",
+          boxShadow: darkTheme
+            ? "0px 5px 10px 5px rgba(255, 255, 255, 0.05)"
+            : "0px 5px 10px 5px rgba(0, 0, 0, 0.25)",
+        }}
         // style={{
         //   top: `${nodePosition.y}px`,
         //   left: `${nodePosition.x}px`,
@@ -50,11 +107,29 @@ export default function NodeToolkit({
         // onMouseEnter={() => handleTooltipEnter()}
         // // onMouseLeave={() => handleTooltipLeave()}
       >
-        <div className="NodeToolkitTitle">
-          <p>{node.nodeTitle}</p>
+        <div
+          className="NodeToolkitTitle"
+          style={{
+            borderBottom: darkTheme ? "1px solid #FFF" : "1px solid #000",
+          }}
+        >
+          <p
+            style={{
+              color: darkTheme ? "#FFF" : "#000",
+            }}
+          >
+            {node.nodeTitle}
+          </p>
         </div>
         <div className="NodeToolkitBelow">
-          <div className="NodeToolkilChildren">
+          <div
+            className="NodeToolkilChildren"
+            style={{
+              boxShadow: darkTheme
+                ? "0px -20px 20px -25px rgba(50, 50, 50, 0.5) inset"
+                : "0px -20px 20px -25px rgba(189, 189, 189, 0.5) inset",
+            }}
+          >
             {node.isLeaf && node.taskId
               ? node.taskId.todos.map((child) => (
                   <div className="NodeToolkitChildrenItem">
@@ -72,13 +147,19 @@ export default function NodeToolkit({
                         fill={
                           child.done
                             ? ColorNode.DONE_NODE
+                            : darkTheme
+                            ? ColorNode.DEFAULT_LIGHT
                             : ColorNode.DEFAULT_DARK
                         }
                       />
                     </svg>
                     <p
                       style={{
-                        color: child.done ? ColorNode.DONE_NODE : "",
+                        color: child.done
+                          ? ColorNode.DONE_NODE
+                          : darkTheme
+                          ? "white"
+                          : "#000",
                         textDecoration: child.done ? "line-through" : "",
                       }}
                     >
@@ -102,11 +183,22 @@ export default function NodeToolkit({
                         fill={
                           child.done
                             ? ColorNode.DONE_NODE
+                            : darkTheme
+                            ? ColorNode.DEFAULT_LIGHT
                             : ColorNode.DEFAULT_DARK
                         }
                       />
                     </svg>
-                    <p style={{ color: child.done ? ColorNode.DONE_NODE : "" }}>
+                    <p
+                      style={{
+                        color: child.done
+                          ? ColorNode.DONE_NODE
+                          : darkTheme
+                          ? "white"
+                          : "#000",
+                        textDecoration: child.done ? "line-through" : "",
+                      }}
+                    >
                       {child.nodeTitle}
                     </p>
                   </div>
@@ -116,7 +208,7 @@ export default function NodeToolkit({
             {node.isLeaf && (
               <button
                 style={{ backgroundColor: "#DF8D41" }}
-                onClick={() => console.log("clicked")}
+                onClick={() => handleFocusClick()}
               >
                 <svg
                   width="12"

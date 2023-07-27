@@ -57,6 +57,7 @@ router.post("/:taskId/:taskTitle", getUser, async (req, res) => {
         boardId: boardId,
         done: done,
         userId: userId,
+        treeId: task.treeId,
         taskId: taskId,
         order: order,
       };

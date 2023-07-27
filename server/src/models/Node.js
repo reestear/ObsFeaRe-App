@@ -11,6 +11,11 @@ const nodeSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  treeId: {
+    type: String,
+    ref: "Tree",
+    required: true,
+  },
   taskId: {
     type: String,
     ref: "Task",

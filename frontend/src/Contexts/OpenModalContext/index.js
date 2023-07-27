@@ -117,11 +117,11 @@ export function ModalProvider({ children }) {
   }
 
   function changeTodoTitle(todoId, val) {
-    console.log(
-      "changing todo with _id: " + todoId + " with the todoTitle: " + val
-    );
-    console.log("inside of changeTodoTitle: modalTodos: ");
-    console.log(modalTodos);
+    // console.log(
+    //   "changing todo with _id: " + todoId + " with the todoTitle: " + val
+    // );
+    // console.log("inside of changeTodoTitle: modalTodos: ");
+    // console.log(modalTodos);
 
     let newModalTodos = [];
     modalTodos.forEach((todo) => {
@@ -129,14 +129,14 @@ export function ModalProvider({ children }) {
       else {
         const updateTodo = { ...todo };
         updateTodo.todoTitle = val;
-        console.log("found the updateTodo being updated:");
-        console.log(updateTodo);
+        // console.log("found the updateTodo being updated:");
+        // console.log(updateTodo);
         newModalTodos.push(updateTodo);
       }
     });
 
-    console.log("the newModalTodos: ");
-    console.log(newModalTodos);
+    // console.log("the newModalTodos: ");
+    // console.log(newModalTodos);
     setModalTodos(newModalTodos);
   }
 

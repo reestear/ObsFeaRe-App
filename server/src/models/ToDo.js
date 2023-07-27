@@ -16,6 +16,11 @@ const todoSchema = new mongoose.Schema({
     ref: "Task",
     required: true,
   },
+  treeId: {
+    type: String,
+    ref: "Tree",
+    default: null,
+  },
   done: {
     type: Boolean,
     required: true,

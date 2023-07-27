@@ -10,7 +10,7 @@ const themeSlice = createSlice({
   initialState: initState,
   reducers: {
     toggleTheme: (state) => {
-      console.log("changing theme");
+      // console.log("changing theme");
       const newState = !state;
       localStorage.setItem("theme", JSON.stringify(newState));
       const Root = document.getElementById("root");

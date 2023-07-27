@@ -48,7 +48,7 @@ function generateContent(request) {
 router.post("/gpt/new", getUser, async (req, res) => {
   try {
     const { request } = req.body;
-    console.log("working with request: " + request);
+    // console.log("working with request: " + request);
     const content = generateContent(request);
 
     const response = await openai.createChatCompletion({

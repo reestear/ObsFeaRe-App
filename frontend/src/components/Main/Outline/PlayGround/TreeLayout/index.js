@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useTrees } from "../../../../../Contexts/TreeContext";
 import ColorNode from "./ColorNode.json";
 import NodeToolkit from "./NodeToolkit";
@@ -7,6 +8,8 @@ import "./styles.css";
 
 const TreeLayout = React.memo(
   ({ toggleOpenTreeInfo, outsideToggleOpenTreeInfo }) => {
+    const darkTheme = useSelector((state) => state.darkTheme);
+
     const treesContext = useTrees();
     const { trees, resTrees } = treesContext;
 
@@ -173,7 +176,7 @@ const TreeLayout = React.memo(
         .attr("y1", -2 * height)
         .attr("x2", (d) => d)
         .attr("y2", 2 * height)
-        .style("stroke", "white") // Adjust the line color as desired
+        .style("stroke", darkTheme ? "#505050" : "white") // Adjust the line color as desired
         .style("stroke-width", 1); // Adjust the line width as desired
       // .style("stroke-dasharray", "2,2"); // Adjust the line dash pattern as desired
 
@@ -188,10 +191,10 @@ const TreeLayout = React.memo(
         .attr("y1", (d) => d)
         .attr("x2", 2 * width)
         .attr("y2", (d) => d)
-        .style("stroke", "white") // Adjust the line color as desired
+        .style("stroke", darkTheme ? "#505050" : "white") // Adjust the line color as desired
         .style("stroke-width", 1); // Adjust the line width as desired
       // .style("stroke-dasharray", "2,2"); // Adjust the line dash pattern as desired
-    }, []);
+    }, [darkTheme]);
 
     // Displaying trees
     useEffect(() => {
@@ -204,6 +207,7 @@ const TreeLayout = React.memo(
       trees.forEach((tree) => {
         const { nodes, links, treeId } = tree;
         // console.log(nodes);
+        // console.log(links);
 
         // Retrieve the node positions from localStorage
         const storedNodePositions = localStorage.getItem("nodePositions");
@@ -250,7 +254,7 @@ const TreeLayout = React.memo(
           .enter()
           .append("line")
           .attr("class", "link")
-          // .style("stroke", "black")
+          .style("stroke", darkTheme ? "white" : "black")
           .style("stroke-width", 1);
 
         // Create SVG elements for nodes
@@ -324,7 +328,7 @@ const TreeLayout = React.memo(
             else if (d.isLeaf) return ColorNode.LEAF_NODE;
             return ColorNode.DEFAULT_NODE;
           })
-          .attr("filter", "url(#drop-shadow-filter)")
+          // .attr("filter", "url(#drop-shadow-filter)")
           .on("mouseenter", function (d) {
             this.setAttribute("prev_fill", this.style.fill);
             this.style.fill = ColorNode.ACTIVE_NODE;
@@ -368,7 +372,7 @@ const TreeLayout = React.memo(
           .attr("class", "node-title")
           .attr("dy", nodeRadius + 12.5) // Adjust the vertical position of the title
           .style("text-anchor", "middle") // Align the text to the center
-          .style("fill", "gray") // Set the color of the text
+          .style("fill", darkTheme ? "#EAEAEA" : "gray") // Set the color of the text
           .style("font-size", "10px") // Set the font size
           .style("opacity", 1) // Set the opacity
           .style("user-select", "none") // Prevent text selection
@@ -427,7 +431,7 @@ const TreeLayout = React.memo(
             );
         });
       });
-    }, [trees]);
+    }, [trees, darkTheme]);
 
     // // memoized inner shadow filter
     // // Pre-render the filter components outside the component to avoid unnecessary re-renders
@@ -487,25 +491,12 @@ const TreeLayout = React.memo(
           ></NodeToolkit>
         )}
         <svg ref={svgRef} width={WIDTH} height={HEIGHT}>
-          {/* {nodeFilter} */}
-          {/* <defs>
-            <filter
-              id="drop-shadow-filter"
-              x="-20%"
-              y="-20%"
-              width="140%"
-              height="140%"
-            >
-              <feDropShadow
-                dx="0"
-                dy="0"
-                stdDeviation="3"
-                flood-color="black"
-                flood-opacity="0.4"
-              />
-            </filter>
-          </defs> */}
-          <rect ref={rectRef} width="100%" height="100%" fill="#EAEAEA" />
+          <rect
+            ref={rectRef}
+            width="100%"
+            height="100%"
+            fill={darkTheme ? "#2D2D2D" : "#EAEAEA"}
+          />
           <g className="zoom-container"></g>
         </svg>
       </>

@@ -1,0 +1,266 @@
+.Home{
+    display: flex;
+    flex-direction: row;
+    /* justify-content: ; */
+    align-items: center;
+    width: 80%;
+    height: 100vh;
+    padding: 0px 10%;
+}
+
+@keyframes slide {
+    from {
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(-100%);
+    }
+}
+
+.InfiniteBanner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    white-space: nowrap;
+
+    position: fixed;
+    top: 15px;
+    left: 0;
+
+    /* gap: 10px; */
+
+    /* width: 100%; */
+    overflow-x: hidden;
+    
+    z-index: 1;
+}
+
+.InfiniteBanner div{
+    width: 5vw;
+    display: flex;
+    justify-content: center;
+
+    animation: slide 1s linear infinite;
+}
+
+.InfiniteBanner div p {
+    color: #000;
+    font-family: 'Aldrich', sans-serif;
+    font-size: 0.8vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: line-through;
+}
+
+.Home-Left{
+    display: flex;
+    width: 50%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    flex-shrink: 0;
+    align-self: stretch;
+
+    z-index: 1;
+}
+.Home-Left .Typewriter {
+    /* display: flex; */
+    width: 100%;
+    /* height: 353px; */
+    /* flex-direction: column; */
+    /* justify-content: center; */
+
+    margin: 10% 0;
+
+    color: #000;
+    font-family: 'Aldrich', sans-serif;
+    font-size: 3.34vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.Home-Left button {
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    background-color: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 10.66667vw; /* 1vw - 15px */
+    height: 4vw; /* 1vh - 8.57143px */
+    border-radius: 10px;
+    border: 2px solid #000;
+
+    position: relative;
+}
+.Home-Left button p{
+    color: #000;
+    font-family: 'Aldrich', sans-serif;
+    font-size: 1.2vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.Home-Left button svg{
+    width: 10.4666666667vw;
+    /* height: 0px; */
+    flex-shrink: 0;
+
+    stroke-width: 0.1px;
+    stroke: #000;
+
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0%, -50%);
+}
+
+.Home-Right-Blur{
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    left: 0;
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); 
+}
+.Home-Right{
+    width: 50%;
+    height: 100%;
+
+    position: absolute;
+    left: 0;
+    z-index: -1;
+   
+}
+.Home-Right div{
+    z-index: -2;
+}
+
+.orangeRect{
+    position: absolute;
+    background: rgba(242, 145, 0, 0.75);
+    top: 40%;
+    left: 60%;
+
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+    border-radius: 10px;
+
+    animation: moveDiagonallyBottomRight 3s ease-in-out infinite;
+}
+
+@keyframes moveDiagonallyBottomRight {
+    0%, 100% {
+        top: 40%;
+        left: 60%;
+    }
+    50% {
+        top: calc(40% + 30px);
+        left: calc(60% + 30px);
+    }
+}
+
+.blueRect{
+    position: absolute;
+    background: rgba(0, 117, 225, 0.75);
+    top: calc(40% - 200px);
+    left: calc(60%);
+
+    width: 230px;
+    height: 230px;
+    flex-shrink: 0;
+    border-radius: 10px;
+
+    animation: moveDiagonallyTopRight 3s ease-in-out infinite;
+}
+
+@keyframes moveDiagonallyTopRight {
+    0%, 100% {
+        top: calc(40% - 200px);
+        left: 60%;
+    }
+    50% {
+        top: calc(40% - 230px);
+        left: calc(60% + 30px);
+    }
+}
+
+.yellowRect{
+    position: absolute;
+    background: rgba(243, 191, 4, 0.75);
+    top: 40%;
+    left: calc(60% - 200px);
+
+    width: 230px;
+    height: 230px;
+    flex-shrink: 0;
+    border-radius: 10px;
+
+    animation: moveDiagonallyBottomLeft 3s ease-in-out infinite;
+}
+
+@keyframes moveDiagonallyBottomLeft {
+    0%, 100% {
+        top: 40%;
+        left: calc(60% - 200px);
+    }
+    50% {
+        top: calc(40% + 30px );
+        left: calc(60% - 230px);
+    }
+}
+
+.greenRect{
+    position: absolute;
+    background: rgba(40, 146, 76, 0.75);
+    top: calc(40% - 170px);
+    left: calc(60% - 170px);
+
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+    border-radius: 10px;
+
+    animation: moveDiagonallyTopLeft 3s ease-in-out infinite;
+}
+
+@keyframes moveDiagonallyTopLeft {
+    0%, 100% {
+        top: calc(40% - 170px);
+        left: calc(60% - 170px);
+    }
+    50% {
+        top: calc(40% - 200px);
+        left: calc(60% - 200px);
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+    .Home{
+        /* flex-direction: column; */
+        width: 90%;
+        padding: 0px 5%;
+        /* padding: 0px 5%; */
+    }
+  }
+
+.LittlePlayGround{
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 1;
+
+    position: relative;
+}

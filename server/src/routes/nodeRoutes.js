@@ -84,6 +84,7 @@ router.post("/focus", getUser, async (req, res) => {
     await Task.create({
       taskTitle: node.nodeTitle,
       userId: userId,
+      treeId: node.treeId,
       isNode: true,
       nodeId: nodeId,
     });

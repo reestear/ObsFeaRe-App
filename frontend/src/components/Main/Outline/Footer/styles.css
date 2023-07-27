@@ -1,11 +1,15 @@
 .footer{
     display: flex;
-    height: 3%;
+    height: 3vh;
+    width: calc(100% - 120px);
     justify-content: space-between;
     align-items: center;
     padding: 1% 60px;
     z-index: 2;
-    position: relative;
+    
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 .RightF p{
     margin: 5px;

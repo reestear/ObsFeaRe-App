@@ -1,12 +1,15 @@
 const Tree = require("../models/Tree");
 const Node = require("../models/Node");
+const { default: mongoose } = require("mongoose");
+const { tree } = require("d3");
 let userId;
 
-async function parseNodeDFS(node, depth) {
+async function parseNodeDFS(node, depth, treeId) {
   if (node.children.length == 0) {
     await Node.create({
       nodeTitle: node.title,
       userId: userId,
+      treeId: treeId,
       children: [],
       done: false,
       isRoot: depth === 0 ? true : false,
@@ -19,13 +22,14 @@ async function parseNodeDFS(node, depth) {
     let children = [];
     for (let childInd in node.children) {
       const child = node.children[childInd];
-      const childId = await parseNodeDFS(child, depth + 1);
+      const childId = await parseNodeDFS(child, depth + 1, treeId);
       children.push(childId);
     }
-    console.log(children);
+    // console.log(children);
     await Node.create({
       nodeTitle: node.title,
       userId: userId,
+      treeId: treeId,
       children: children,
       done: false,
       isRoot: depth === 0 ? true : false,
@@ -40,8 +44,12 @@ async function parseNodeDFS(node, depth) {
 
 async function parseTree(treeJson, userid) {
   userId = userid;
-  const rootNodeId = await parseNodeDFS(treeJson, 0);
+  const treeObjectId = new mongoose.Types.ObjectId();
+  const treeId = treeObjectId.toString();
+
+  const rootNodeId = await parseNodeDFS(treeJson, 0, treeId);
   await Tree.create({
+    _id: treeObjectId,
     nodeId: rootNodeId,
     userId: userId,
     done: false,
