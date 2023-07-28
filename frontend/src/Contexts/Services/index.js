@@ -7,6 +7,8 @@ const config = {
   },
 };
 
+const baseURL = "https://obsfeare-api.vercel.app";
+
 export async function dataUserRegister(username, email, password) {
   const user = {
     username: username,
@@ -22,7 +24,7 @@ export async function dataUserRegister(username, email, password) {
   //   console.log("sending user:");
   //   console.log(user);
   return await axios
-    .post("http://localhost:8080/auth/register", { user })
+    .post(`${baseURL}/auth/register`, { user })
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
       sessionStorage.setItem("actoken", mes.actoken);
@@ -52,7 +54,7 @@ export async function dataUserLogin(email, password) {
       message: "Incorrect Type of Credentials",
     };
   return await axios
-    .get(`http://localhost:8080/auth/login/${email}/${password}`)
+    .get(`${baseURL}/auth/login/${email}/${password}`)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
       // console.log(mes);
@@ -81,12 +83,10 @@ export async function dataGetTodos() {
       authorization: `Bearer ${actoken}`,
     },
   };
-  return await axios
-    .get("http://localhost:8080/todos", config)
-    .then(async (res) => {
-      const mes = await JSON.parse(res.request.response);
-      return mes.todos;
-    });
+  return await axios.get(`${baseURL}/todos`, config).then(async (res) => {
+    const mes = await JSON.parse(res.request.response);
+    return mes.todos;
+  });
 }
 
 export async function dataGetTasks() {
@@ -96,15 +96,13 @@ export async function dataGetTasks() {
       authorization: `Bearer ${actoken}`,
     },
   };
-  return await axios
-    .get("http://localhost:8080/tasks", config)
-    .then(async (res) => {
-      const mes = await JSON.parse(res.request.response);
-      // console.log(mes);
-      // console.log("dataGetTasks:");
-      // console.log(mes.tasks);
-      return mes.tasks;
-    });
+  return await axios.get(`${baseURL}/tasks`, config).then(async (res) => {
+    const mes = await JSON.parse(res.request.response);
+    // console.log(mes);
+    // console.log("dataGetTasks:");
+    // console.log(mes.tasks);
+    return mes.tasks;
+  });
 }
 
 export async function dataSendUpdatedTask({ _id, taskTitle }, todos) {
@@ -116,7 +114,7 @@ export async function dataSendUpdatedTask({ _id, taskTitle }, todos) {
   };
 
   return await axios
-    .post(`http://localhost:8080/tasks/${_id}/${taskTitle}`, { todos }, config)
+    .post(`${baseURL}/tasks/${_id}/${taskTitle}`, { todos }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
@@ -142,7 +140,7 @@ export async function dataToggleToDo(todoId) {
   };
 
   return await axios
-    .post(`http://localhost:8080/todos/${todoId}`, {}, config)
+    .post(`${baseURL}/todos/${todoId}`, {}, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
@@ -168,7 +166,7 @@ export async function dataDeleteTask(taskId) {
   };
 
   return await axios
-    .delete(`http://localhost:8080/tasks/${taskId}`, config)
+    .delete(`${baseURL}/tasks/${taskId}`, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
@@ -195,7 +193,7 @@ export async function dataUpdateBoards(mergedTodos) {
   };
 
   return await axios
-    .post(`http://localhost:8080/todos/boardsUpdate`, { mergedTodos }, config)
+    .post(`${baseURL}/todos/boardsUpdate`, { mergedTodos }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 
@@ -214,7 +212,7 @@ export async function dataUpdateBoards(mergedTodos) {
 
 export async function treesPull() {
   return await axios
-    .get(`http://localhost:8080/trees`, config)
+    .get(`${baseURL}/trees`, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
       // console.log(mes.message);
@@ -231,7 +229,7 @@ export async function treesPull() {
 
 export async function generateTree(request) {
   return await axios
-    .post(`http://localhost:8080/trees/gpt/new`, { request }, config)
+    .post(`${baseURL}/trees/gpt/new`, { request }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
       return { status: true, treeId: mes.treeId };
@@ -250,7 +248,7 @@ export async function generateTree(request) {
 
 export async function deleteNode(nodeId) {
   return await axios
-    .post(`http://localhost:8080/nodes/delete`, { nodeId }, config)
+    .post(`${baseURL}/nodes/delete`, { nodeId }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
       return { status: true, message: mes.message };
@@ -269,7 +267,7 @@ export async function deleteNode(nodeId) {
 
 export async function getHistory() {
   return await axios
-    .get(`http://localhost:8080/chatHistory`, config)
+    .get(`${baseURL}/chatHistory`, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
       return mes.chatHistory;
@@ -283,7 +281,7 @@ export async function getHistory() {
 
 export async function setFocusOnNode(nodeId) {
   return await axios
-    .post(`http://localhost:8080/nodes/focus`, { nodeId }, config)
+    .post(`${baseURL}/nodes/focus`, { nodeId }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
       return {
