@@ -50,12 +50,22 @@ export default function Home() {
   //   };
   // }, [rectangles]);
 
-  const animatedProps = useSpring({
+  const animatedPropsTop = useSpring({
     from: {
       marginTop: "-40px",
       opacity: "0",
     },
     marginTop: "0",
+    opacity: "100",
+    config: { mass: 1, tension: 100, friction: 20 },
+  });
+
+  const animatedPropsBottom = useSpring({
+    from: {
+      marginBottom: "-40px",
+      opacity: "0",
+    },
+    marginBottom: "0",
     opacity: "100",
     config: { mass: 1, tension: 100, friction: 20 },
   });
@@ -66,7 +76,7 @@ export default function Home() {
 
   return (
     <div className="Home">
-      <a.div className="InfiniteBanner" style={{ ...animatedProps }}>
+      <a.div className="InfiniteBannerTop" style={{ ...animatedPropsTop }}>
         {bannerPs.map((item) => (
           <div>
             <p>{item}</p>
@@ -107,6 +117,16 @@ export default function Home() {
       <div className="LittlePlayGround">
         <LittleTreeLayout></LittleTreeLayout>
       </div>
+      <a.div
+        className="InfiniteBannerBottom"
+        style={{ ...animatedPropsBottom }}
+      >
+        {bannerPs.map((item) => (
+          <div>
+            <p>{item}</p>
+          </div>
+        ))}
+      </a.div>
     </div>
   );
 }

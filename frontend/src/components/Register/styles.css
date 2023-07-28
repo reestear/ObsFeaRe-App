@@ -1,13 +1,21 @@
+.RegisterWrapper{
+    overflow: hidden;
+    height: 100%;
+}
+
 .Register{
     display: flex;
     flex-direction: column;
     height: 100vh;
-    justify-content: space-between;
+    width: 100%;
+    justify-content: center;
     align-items: center;
-    background-color: #EAEAEA;
     color: black;
     font-family: 'Montserrat', sans-serif;
     -webkit-user-select: none;
+
+    position: absolute;
+    z-index: 2;
 }
 .RegisterTitle{
     margin-left: 15px;
@@ -20,7 +28,12 @@
 .RegisterGrid{
     width: 400px;
     padding: 35px 0px;
-    background-color: #293437;
+
+    /* background-color: #293437; */
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    backdrop-filter: blur(100px);
+    -webkit-backdrop-filter: blur(100px);
+
     border-radius: 25px;
     gap: 15px;
     display: flex;
@@ -47,7 +60,9 @@
     align-items: center;
     width: 300px;
     height: 9vh;
-    background-color: #EAEAEA;
+    /* background-color: #EAEAEA; */
+    border: 1px solid rgba(26, 26, 26, 0.1);
+
     border-radius: 15px;
 }
 .RegisterEmail input, .RegisterPassword input, .RegisterName input{

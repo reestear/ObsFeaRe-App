@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dataUserLogin } from "../../Contexts/Services";
+import BackgroundTreeLayout from "../BackgroundTreeLayout";
 import "./styles.css";
 
 export default function LogIn() {
@@ -27,72 +28,75 @@ export default function LogIn() {
   const [errMes, setErrMes] = useState("");
 
   return (
-    <div className="LogIn">
-      <div
-        style={{ backgroundColor: "white", height: "60px", width: "100%" }}
-      ></div>
-      <div className="LogInForm">
-        <div className="LogInTitle">
-          <h3>LogIn</h3>
-        </div>
-        <div className="LogInGrid">
-          <div className="LogInEmail">
-            <input
-              type="email"
-              name="email"
-              autocomplete="email"
-              placeholder="Insert Your Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
+    <div className="LoginWrapper">
+      <div className="LogIn">
+        {/* <div
+          style={{ backgroundColor: "white", height: "60px", width: "100%" }}
+        ></div> */}
+        <div className="LogInForm">
+          <div className="LogInTitle">
+            <h3>LogIn</h3>
           </div>
-          <div className="LogInPassword">
-            <input
-              type={passwordType}
-              name="password"
-              autocomplete="current-password"
-              placeholder="Insert Your Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-            <svg
-              onMouseDown={() => setPasswordType("text")}
-              onMouseUp={() => setPasswordType("password")}
-              width="23"
-              height="24"
-              viewBox="0 0 23 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {eye_path}
-            </svg>
-          </div>
-          {errMes !== "" && (
-            <div className="divErrorMessage">
-              {" "}
-              <p className="ErrorMessage">{errMes}</p>{" "}
+          <div className="LogInGrid">
+            <div className="LogInEmail">
+              <input
+                type="email"
+                name="email"
+                autocomplete="email"
+                placeholder="Insert Your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
             </div>
-          )}
-          <div className="submitLogInButton">
-            <button
-              onClick={() => {
-                dataUserLogin(email, password).then((res) => {
-                  if (res.status) navigate("/application");
-                  else setErrMes(res.message);
-                });
-              }}
-            >
-              Log In
-            </button>
+            <div className="LogInPassword">
+              <input
+                type={passwordType}
+                name="password"
+                autocomplete="current-password"
+                placeholder="Insert Your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+              <svg
+                onMouseDown={() => setPasswordType("text")}
+                onMouseUp={() => setPasswordType("password")}
+                width="23"
+                height="24"
+                viewBox="0 0 23 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {eye_path}
+              </svg>
+            </div>
+            {errMes !== "" && (
+              <div className="divErrorMessage">
+                {" "}
+                <p className="ErrorMessage">{errMes}</p>{" "}
+              </div>
+            )}
+            <div className="submitLogInButton">
+              <button
+                onClick={() => {
+                  dataUserLogin(email, password).then((res) => {
+                    if (res.status) navigate("/application");
+                    else setErrMes(res.message);
+                  });
+                }}
+              >
+                Log In
+              </button>
+            </div>
+          </div>
+          <div className="registerButton">
+            <button onClick={() => navigate("/register")}>Register</button>
           </div>
         </div>
-        <div className="registerButton">
-          <button onClick={() => navigate("/register")}>Register</button>
-        </div>
+        {/* <div
+          style={{ backgroundColor: "white", height: "60px", width: "100%" }}
+        ></div> */}
       </div>
-      <div
-        style={{ backgroundColor: "white", height: "60px", width: "100%" }}
-      ></div>
+      <BackgroundTreeLayout></BackgroundTreeLayout>
     </div>
   );
 }

@@ -295,26 +295,49 @@ const TreeLayout = React.memo(
           setDragging(false);
 
           // Store the updated node positions in localStorage
-          const curNodePositions = {};
-          nodes.forEach((node) => {
-            curNodePositions[node._id] = { x: node.x, y: node.y };
-          });
-          const storedNodePositions = localStorage.getItem("nodePositions");
-          if (storedNodePositions !== null) {
-            const nodePositions = JSON.parse(storedNodePositions);
-            nodePositions[treeId] = curNodePositions;
-            localStorage.setItem(
-              "nodePositions",
-              JSON.stringify(nodePositions)
-            );
-          } else {
-            const nodePositions = {};
-            nodePositions[treeId] = curNodePositions;
-            localStorage.setItem(
-              "nodePositions",
-              JSON.stringify(nodePositions)
-            );
-          }
+          setTimeout(() => {
+            const curNodePositions = {};
+            nodes.forEach((node) => {
+              curNodePositions[node._id] = { x: node.x, y: node.y };
+            });
+            const storedNodePositions = localStorage.getItem("nodePositions");
+            if (storedNodePositions !== null) {
+              const nodePositions = JSON.parse(storedNodePositions);
+              nodePositions[treeId] = curNodePositions;
+              localStorage.setItem(
+                "nodePositions",
+                JSON.stringify(nodePositions)
+              );
+            } else {
+              const nodePositions = {};
+              nodePositions[treeId] = curNodePositions;
+              localStorage.setItem(
+                "nodePositions",
+                JSON.stringify(nodePositions)
+              );
+            }
+          }, 250);
+          // Store the updated node positions in localStorage
+          // const curNodePositions = {};
+          // nodes.forEach((node) => {
+          //   curNodePositions[node._id] = { x: node.x, y: node.y };
+          // });
+          // const storedNodePositions = localStorage.getItem("nodePositions");
+          // if (storedNodePositions !== null) {
+          //   const nodePositions = JSON.parse(storedNodePositions);
+          //   nodePositions[treeId] = curNodePositions;
+          //   localStorage.setItem(
+          //     "nodePositions",
+          //     JSON.stringify(nodePositions)
+          //   );
+          // } else {
+          //   const nodePositions = {};
+          //   nodePositions[treeId] = curNodePositions;
+          //   localStorage.setItem(
+          //     "nodePositions",
+          //     JSON.stringify(nodePositions)
+          //   );
+          // }
         }
 
         // Append the circle to the node container

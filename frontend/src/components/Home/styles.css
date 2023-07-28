@@ -6,9 +6,10 @@
     width: 80%;
     height: 100vh;
     padding: 0px 10%;
+    background-color: #EAEAEA;
 }
 
-@keyframes slide {
+@keyframes slideTop {
     from {
         transform: translateX(0);
     }
@@ -17,7 +18,7 @@
     }
 }
 
-.InfiniteBanner{
+.InfiniteBannerTop{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -32,18 +33,63 @@
     /* width: 100%; */
     overflow-x: hidden;
     
-    z-index: 1;
+    z-index: 2;
 }
 
-.InfiniteBanner div{
+.InfiniteBannerTop div{
     width: 5vw;
     display: flex;
     justify-content: center;
 
-    animation: slide 1s linear infinite;
+    animation: slideTop 1s linear infinite;
 }
 
-.InfiniteBanner div p {
+.InfiniteBannerTop div p {
+    color: #000;
+    font-family: 'Aldrich', sans-serif;
+    font-size: 0.8vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: line-through;
+}
+
+@keyframes slideBottom {
+    from {
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(100%);
+    }
+}
+
+.InfiniteBannerBottom{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    white-space: nowrap;
+
+    position: fixed;
+    bottom: 15px;
+    left: -5vw;
+
+    /* gap: 10px; */
+
+    /* width: 100%; */
+    overflow-x: hidden;
+    
+    z-index: 2;
+}
+
+.InfiniteBannerBottom div{
+    width: 5vw;
+    display: flex;
+    justify-content: center;
+
+    animation: slideBottom 1s linear infinite;
+}
+
+.InfiniteBannerBottom div p {
     color: #000;
     font-family: 'Aldrich', sans-serif;
     font-size: 0.8vw;
@@ -64,7 +110,7 @@
     flex-shrink: 0;
     align-self: stretch;
 
-    z-index: 1;
+    z-index: 2;
 }
 .Home-Left .Typewriter {
     /* display: flex; */
@@ -110,7 +156,7 @@
 .Home-Left button svg{
     width: 10.4666666667vw;
     /* height: 0px; */
-    flex-shrink: 0;
+    /* flex-shrink: 0; */
 
     stroke-width: 0.1px;
     stroke: #000;
@@ -130,6 +176,7 @@
 
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px); 
+    z-index: 1;
 }
 .Home-Right{
     width: 50%;
@@ -137,11 +184,11 @@
 
     position: absolute;
     left: 0;
-    z-index: -1;
+    z-index: 0;
    
 }
 .Home-Right div{
-    z-index: -2;
+    z-index: -1;
 }
 
 .orangeRect{
@@ -260,7 +307,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    z-index: 1;
+    z-index: 2;
 
     position: relative;
 }

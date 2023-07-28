@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dataUserRegister } from "../../Contexts/Services";
+import BackgroundTreeLayout from "../BackgroundTreeLayout";
 import "./styles.css";
 
 export default function Register() {
@@ -46,107 +47,104 @@ export default function Register() {
     );
 
   return (
-    <div className="Register">
-      <div
-        style={{ backgroundColor: "white", height: "60px", width: "100%" }}
-      ></div>
-      <div className="RegisterForm">
-        <div className="RegisterTitle">
-          <h3>Register</h3>
-        </div>
-        <div className="RegisterGrid">
-          <div className="RegisterName">
-            <input
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setName(e.target.value)}
-            ></input>
+    <div className="RegisterWrapper">
+      <div className="Register">
+        <div className="RegisterForm">
+          <div className="RegisterTitle">
+            <h3>Register</h3>
           </div>
-          <div className="RegisterEmail">
-            <input
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-          </div>
-          <div className="RegisterPassword">
-            <input
-              type={passwordType}
-              name="password"
-              autocomplete="current-password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-            <svg
-              onMouseDown={() => setPasswordType("text")}
-              onMouseUp={() => setPasswordType("password")}
-              width="23"
-              height="24"
-              viewBox="0 0 23 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {eye_path}
-            </svg>
-          </div>
-          <div className="RegisterPassword">
-            <input
-              type={passwordTypeAgain}
-              name="password"
-              autocomplete="current-password"
-              placeholder="Password Again"
-              value={passwordAgain}
-              onChange={(e) => setPasswordAgain(e.target.value)}
-            ></input>
-            <svg
-              onMouseDown={() => setPasswordTypeAgain("text")}
-              onMouseUp={() => setPasswordTypeAgain("password")}
-              width="23"
-              height="24"
-              viewBox="0 0 23 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {eye_path_again}
-            </svg>
-          </div>
-          {errMes !== "" && (
-            <div className="divErrorMessage">
-              {" "}
-              <p className="ErrorMessage">{errMes}</p>{" "}
+          <div className="RegisterGrid">
+            <div className="RegisterName">
+              <input
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setName(e.target.value)}
+              ></input>
             </div>
-          )}
-          <div className="submitRegisterButton">
-            <button
-              onClick={() => {
-                if (password !== passwordAgain) {
-                  return setErrMes(
-                    "The passwords differ. Please enter the same password again."
-                  );
-                }
-                dataUserRegister(username, email, password).then((res) => {
-                  console.log(res);
-                  if (res.status) {
-                    setEmail("");
-                    setName("");
-                    setPassword("");
-                    navigate("/application");
-                  } else setErrMes(res.message);
-                });
-              }}
-            >
-              Register
-            </button>
+            <div className="RegisterEmail">
+              <input
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
+            </div>
+            <div className="RegisterPassword">
+              <input
+                type={passwordType}
+                name="password"
+                autocomplete="current-password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+              <svg
+                onMouseDown={() => setPasswordType("text")}
+                onMouseUp={() => setPasswordType("password")}
+                width="23"
+                height="24"
+                viewBox="0 0 23 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {eye_path}
+              </svg>
+            </div>
+            <div className="RegisterPassword">
+              <input
+                type={passwordTypeAgain}
+                name="password"
+                autocomplete="current-password"
+                placeholder="Password Again"
+                value={passwordAgain}
+                onChange={(e) => setPasswordAgain(e.target.value)}
+              ></input>
+              <svg
+                onMouseDown={() => setPasswordTypeAgain("text")}
+                onMouseUp={() => setPasswordTypeAgain("password")}
+                width="23"
+                height="24"
+                viewBox="0 0 23 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {eye_path_again}
+              </svg>
+            </div>
+            {errMes !== "" && (
+              <div className="divErrorMessage">
+                {" "}
+                <p className="ErrorMessage">{errMes}</p>{" "}
+              </div>
+            )}
+            <div className="submitRegisterButton">
+              <button
+                onClick={() => {
+                  if (password !== passwordAgain) {
+                    return setErrMes(
+                      "The passwords differ. Please enter the same password again."
+                    );
+                  }
+                  dataUserRegister(username, email, password).then((res) => {
+                    console.log(res);
+                    if (res.status) {
+                      setEmail("");
+                      setName("");
+                      setPassword("");
+                      navigate("/application");
+                    } else setErrMes(res.message);
+                  });
+                }}
+              >
+                Register
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="loginButton">
-          <button onClick={() => navigate("/login")}>Log In</button>
+          <div className="loginButton">
+            <button onClick={() => navigate("/login")}>Log In</button>
+          </div>
         </div>
       </div>
-      <div
-        style={{ backgroundColor: "white", height: "60px", width: "100%" }}
-      ></div>
+      <BackgroundTreeLayout></BackgroundTreeLayout>
     </div>
   );
 }

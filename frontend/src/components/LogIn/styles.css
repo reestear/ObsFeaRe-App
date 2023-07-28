@@ -1,13 +1,21 @@
+.LoginWrapper{
+    overflow: hidden;
+    height: 100%;
+}
+
 .LogIn{
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
     align-items: center;
-    background-color: #EAEAEA;
     color: black;
     font-family: 'Montserrat', sans-serif;
     -webkit-user-select: none;
+
+    position: absolute;
+    z-index: 2;
 }
 .LogInTitle{
     margin-left: 15px;
@@ -20,7 +28,11 @@
 .LogInGrid{
     width: 400px;
 
-    background-color: #293437;
+    /* background-color: #293437; */
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    backdrop-filter: blur(100px);
+    -webkit-backdrop-filter: blur(100px); 
+
     padding: 35px 0px;
     border-radius: 25px;
     gap: 15px;
@@ -48,7 +60,13 @@
     align-items: center;
     width: 300px;
     height: 80px;
-    background-color: #EAEAEA;
+
+    /* background-color: #EAEAEA; */
+    /* opacity: 50%; */
+    /* backdrop-filter: blur(250px);
+    -webkit-backdrop-filter: blur(250px);  */
+    border: 1px solid rgba(26, 26, 26, 0.1);
+
     border-radius: 15px;
 }
 .LogInEmail input, .LogInPassword input{
@@ -81,7 +99,7 @@
 .submitLogInButton button{
     cursor: pointer;
     border: none;
-    background-color: #62583d;
+    background-color: #906339;
     padding: 10px 15px;
     border-radius: 5px;
     font-family: 'Montserrat', sans-serif;

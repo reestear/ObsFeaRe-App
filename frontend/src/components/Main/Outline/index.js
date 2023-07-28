@@ -14,7 +14,7 @@ export const PageContext = createContext();
 
 export default function Outline() {
   const darkTheme = useSelector((state) => state.darkTheme);
-  const [page, setPage] = useState("WeekBan");
+  const [page, setPage] = useState();
 
   const [openChat, setOpenChat] = useState(false);
   const toggleOpenChat = () => {
@@ -29,6 +29,7 @@ export default function Outline() {
   useEffect(() => {
     const pageLocal = localStorage.getItem("page");
     if (pageLocal !== null) setPage(JSON.parse(pageLocal));
+    else setPage("WeekBan");
   }, []);
 
   return (
@@ -47,10 +48,6 @@ export default function Outline() {
             <NotifyInfoProvider>
               <ToastContainer></ToastContainer>
               <PlayGround></PlayGround>
-              {/* <ChatAI
-                openChat={openChat}
-                toggleOpenChat={toggleOpenChat}
-              ></ChatAI> */}
             </NotifyInfoProvider>
           </ChatHistoryProvider>
         </TreesProvider>
