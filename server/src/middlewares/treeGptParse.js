@@ -1,7 +1,6 @@
 const Tree = require("../models/Tree");
 const Node = require("../models/Node");
 const { default: mongoose } = require("mongoose");
-const { tree } = require("d3");
 let userId;
 
 async function parseNodeDFS(node, depth, treeId) {

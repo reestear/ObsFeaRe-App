@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const Tree = require("../models/Tree");
 const Node = require("../models/Node");
 const { getUser } = require("../middlewares/authMiddleware");
