@@ -7,7 +7,7 @@ const config = {
   },
 };
 
-const baseURL = "https://obsfeare-api.vercel.app";
+const baseURL = "https://obsfeare-api.onrender.com";
 
 export async function dataUserRegister(username, email, password) {
   const user = {
