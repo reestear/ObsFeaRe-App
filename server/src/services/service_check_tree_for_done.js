@@ -65,8 +65,10 @@ async function dfs_is_done(curNodeId) {
 
 async function check_tree_for_done(treeId) {
   const tree = await Tree.findById(treeId);
+  if (!tree) return 0;
 
-  const isTreeDone = dfs_is_done(tree.nodeId);
+  const isTreeDone = await dfs_is_done(tree.nodeId);
+
   if (isTreeDone) {
     tree.done = true;
     await tree.save();
