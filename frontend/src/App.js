@@ -28,6 +28,14 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const screenRes = {
+      width: window.screen.width,
+      height: window.screen.height,
+    };
+    localStorage.setItem("screenRes", JSON.stringify(screenRes));
+  }, []);
+
   return (
     <>
       {isMobile && <Mobile></Mobile>}

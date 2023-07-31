@@ -46,6 +46,28 @@ export default function Register() {
       />
     );
 
+  const [clicked, setClicked] = useState(false);
+  const handlOnClickReq = () => {
+    setClicked(true);
+    if (password !== passwordAgain) {
+      setClicked(false);
+      return setErrMes(
+        "The passwords differ. Please enter the same password again."
+      );
+    }
+    dataUserRegister(username, email, password).then((res) => {
+      if (res.status) {
+        setEmail("");
+        setName("");
+        setPassword("");
+        navigate("/application");
+      } else {
+        setErrMes(res.message);
+        setClicked(false);
+      }
+    });
+  };
+
   return (
     <div className="RegisterWrapper">
       <div className="Register">
@@ -116,27 +138,14 @@ export default function Register() {
                 <p className="ErrorMessage">{errMes}</p>{" "}
               </div>
             )}
-            <div className="submitRegisterButton">
-              <button
-                onClick={() => {
-                  if (password !== passwordAgain) {
-                    return setErrMes(
-                      "The passwords differ. Please enter the same password again."
-                    );
-                  }
-                  dataUserRegister(username, email, password).then((res) => {
-                    console.log(res);
-                    if (res.status) {
-                      setEmail("");
-                      setName("");
-                      setPassword("");
-                      navigate("/application");
-                    } else setErrMes(res.message);
-                  });
-                }}
-              >
-                Register
-              </button>
+            <div
+              className="submitRegisterButton"
+              style={{
+                opacity: clicked ? "75%" : "100%",
+                pointerEvents: clicked ? "none" : "auto",
+              }}
+            >
+              <button onClick={handlOnClickReq}>Register</button>
             </div>
           </div>
           <div className="loginButton">

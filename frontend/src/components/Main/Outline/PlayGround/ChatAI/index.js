@@ -35,9 +35,9 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
 
   const animatedProps = useSpring({
     from: {
-      bottom: openChat ? "-40%" : "6.5%",
+      bottom: openChat ? "-37.75%" : "5%",
     },
-    bottom: openChat ? "6.5%" : "-40%",
+    bottom: openChat ? "5%" : "-37.75%",
     config: { mass: 1, tension: 100, friction: 20 },
   });
   const animatedShadow = useSpring({
@@ -104,8 +104,8 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
             style={{
               scale: openChat ? "1" : "-1",
             }}
-            width="10"
-            height="10"
+            // width="10"
+            // height="10"
             viewBox="0 0 10 10"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

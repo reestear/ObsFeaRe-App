@@ -41,6 +41,32 @@ export function DataProvider({ children }) {
     },
   ]);
 
+  function frontUpdateData(todoId) {
+    console.log("inside upd");
+    const { todos, tasks } = data;
+    console.log(todos);
+
+    const newTodos = todos.map((todo) => {
+      if (todo._id !== todoId) return todo;
+      else {
+        const copyTodo = { ...todo };
+        copyTodo.done = !copyTodo.done;
+
+        if (copyTodo.boardId === 3) copyTodo.boardId = 0;
+        else copyTodo.boardId = 3;
+
+        return copyTodo;
+      }
+    });
+    // console.log("newTodos: ");
+    // console.log(newTodos);
+
+    setData({
+      todos: newTodos,
+      tasks: tasks,
+    });
+  }
+
   async function updateData() {
     const todos = await dataGetTodos();
     const tasks = await dataGetTasks();
@@ -76,6 +102,62 @@ export function DataProvider({ children }) {
     await dataUpdateBoards(merdegTodos);
     await updateData();
     await updateBoards();
+  }
+
+  useEffect(() => {
+    console.log("inside useEffBoard");
+    const { todos, tasks } = data;
+    console.log(todos);
+
+    const weekTodos = todos.filter((todo) => todo.boardId === 0);
+    const activeTodos = todos.filter((todo) => todo.boardId === 1);
+    const progressTodos = todos.filter((todo) => todo.boardId === 2);
+    const doneTodos = todos.filter((todo) => todo.boardId === 3);
+
+    setBoards([
+      {
+        boardId: 0,
+        boardTitle: "Week",
+        boardTodos: weekTodos.sort((a, b) => a.order - b.order),
+      },
+      {
+        boardId: 1,
+        boardTitle: "To Do",
+        boardTodos: activeTodos.sort((a, b) => a.order - b.order),
+      },
+      {
+        boardId: 2,
+        boardTitle: "In Progress",
+        boardTodos: progressTodos.sort((a, b) => a.order - b.order),
+      },
+      {
+        boardId: 3,
+        boardTitle: "Done",
+        boardTodos: doneTodos.sort((a, b) => a.order - b.order),
+      },
+    ]);
+  }, [data]);
+
+  function frontUpdateBoards(mergedTodos) {
+    const { todos, tasks } = data;
+    const newTodos = [...todos];
+
+    newTodos.forEach((newTodo) => {
+      const foundTodo = mergedTodos.find((todo) => todo._id === newTodo._id);
+      if (foundTodo) {
+        newTodo.boardId = foundTodo.boardId;
+        newTodo.order = foundTodo.order;
+        newTodo.done = foundTodo.done;
+      }
+    });
+    console.log("newTodos");
+    console.log(newTodos);
+
+    setData({
+      todos: newTodos,
+      tasks: tasks,
+    });
+    dataUpdateBoards(mergedTodos);
   }
 
   async function updateBoards() {
@@ -124,6 +206,8 @@ export function DataProvider({ children }) {
     sendUpdatedTask: sendUpdatedTask,
     deleteTask: deleteTask,
     dragUpdateBoards: dragUpdateBoards,
+    frontUpdateData: frontUpdateData,
+    frontUpdateBoards: frontUpdateBoards,
   };
 
   return (

@@ -7,11 +7,13 @@ import colorsDark from "./colorsDark.json";
 import colorsLight from "./colorsLight.json";
 import "./styles.css";
 
-export default function Board({ boardTitle, boardId }) {
+export default React.memo(function Board({ boardTitle, boardId }) {
   const contextPayload = useData();
   const { boards } = contextPayload;
   const darkTheme = useSelector((state) => state.darkTheme);
   const colors = darkTheme ? colorsDark : colorsLight;
+
+  // console.log("board rerendering");
 
   const { dragOverHandler, dropCardHandler } = useContext(dragContext);
 
@@ -50,4 +52,4 @@ export default function Board({ boardTitle, boardId }) {
       </div>
     </div>
   );
-}
+});

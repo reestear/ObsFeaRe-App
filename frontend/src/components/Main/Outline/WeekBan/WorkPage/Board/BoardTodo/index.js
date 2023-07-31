@@ -20,10 +20,18 @@ export default function BoardTodo({ boardId, todo }) {
   const { todoTitle, taskId } = todo;
   const { taskTitle } = taskId;
   const contextPayload = useData();
-  const { updateBoards, updateData } = contextPayload;
+  const { updateBoards, updateData, frontUpdateData } = contextPayload;
 
   const darkTheme = useSelector((state) => state.darkTheme);
   const colors = darkTheme ? colorsDark : colorsLight;
+
+  const handleOnClick = async () => {
+    frontUpdateData(todo._id);
+
+    await dataToggleToDo(todo._id);
+    // await updateData();
+    // await updateBoards();
+  };
 
   return (
     <div
@@ -41,11 +49,7 @@ export default function BoardTodo({ boardId, todo }) {
         type="checkbox"
         className="boardTodoCheck easeTransition"
         style={{ display: "transparent" }}
-        onClick={async () => {
-          await dataToggleToDo(todo._id);
-          await updateData();
-          await updateBoards();
-        }}
+        onClick={handleOnClick}
       ></input>
       <div className="boardTodoInfo" draggable={false}>
         <p className="boardTodoInfoTodoTitle" draggable={false}>

@@ -28,29 +28,28 @@
     flex-direction: column;
     align-items: center;
     width: 40%;
-    height: calc(45% + 30px);
-    /* top: 0; */
-    /* bottom: calc(-1 * (45% + 30px) + 16px + 3vh + 2% + 10px); */
-    /* bottom: calc(0px + 3vh + 2% + 10px); */
-    /* right: 0px; */
+    height: 45%;
+
+    bottom: calc(5%); /* -37.75% - closed, 5% - open*/
     position:fixed;
     left: 30%;
-    z-index: 1;
+    /* background-color: red; */
+
+    /* z-index: 4;  */
 }
 .btn-openChatAI{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80px;
-    /* height: 200px; */
-    /* height: 50%; */
-    padding: 3px;
+    width: 13.5%;
+    height: 4%;
     border-radius: 5px 5px 0px 0px;
     background: #2F2F2F;
     border: none;
     cursor: pointer;
 }
 .btn-openChatAI svg{
+    height: 60%;
     transition: scale;
     transition-duration: 0.15s;
 }
@@ -58,24 +57,22 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+
     width: 100%;
-    height: calc(100% - 46px);
+    height: 96%;
+    /* padding: 2% 0; */
+
     border-radius: 15px;
     background: #FFF;
-    gap: 20px;
-    padding: 15px 0px;
-    /* padding-bottom: 25px; */
-    /* box-shadow: 0px 10px 20px 10px rgba(0, 0, 0, 0.25); */
+    /* gap: 20px; */
     box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.25) inset;
-
-    
 }
 .ChatHistory{
     display: flex;
     width: 90%;
-    height: 100%;
+    height: 75%;
     /* height: 70%; */
     overflow: auto;
     flex-direction: column;

@@ -13,8 +13,10 @@ const TreeLayout = React.memo(
     const treesContext = useTrees();
     const { trees, resTrees } = treesContext;
 
-    const WIDTH = 1512;
-    const HEIGHT = 800 * 0.94;
+    const screenRes = JSON.parse(localStorage.getItem("screenRes"));
+
+    const WIDTH = screenRes.width;
+    const HEIGHT = screenRes.height;
     const nodeRadius = 15; // Adjust the radius of the circles
     const padding = 25;
 
@@ -31,10 +33,6 @@ const TreeLayout = React.memo(
       x: 0,
       y: 0,
     });
-    // const [tooltipRelNodePosition, setTooltipRelNodePosition] = useState({
-    //   x: 0,
-    //   y: 0,
-    // });
 
     function handleTooltipEnter() {
       setTooltipOpen(true);

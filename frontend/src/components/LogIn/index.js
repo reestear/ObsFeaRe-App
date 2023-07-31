@@ -27,6 +27,18 @@ export default function LogIn() {
     );
   const [errMes, setErrMes] = useState("");
 
+  const [clicked, setClicked] = useState(false);
+  const handlOnClickReq = () => {
+    setClicked(true);
+    dataUserLogin(email, password).then((res) => {
+      if (res.status) navigate("/application");
+      else {
+        setErrMes(res.message);
+        setClicked(false);
+      }
+    });
+  };
+
   return (
     <div className="LoginWrapper">
       <div className="LogIn">
@@ -75,17 +87,14 @@ export default function LogIn() {
                 <p className="ErrorMessage">{errMes}</p>{" "}
               </div>
             )}
-            <div className="submitLogInButton">
-              <button
-                onClick={() => {
-                  dataUserLogin(email, password).then((res) => {
-                    if (res.status) navigate("/application");
-                    else setErrMes(res.message);
-                  });
-                }}
-              >
-                Log In
-              </button>
+            <div
+              className="submitLogInButton"
+              style={{
+                opacity: clicked ? "75%" : "",
+                pointerEvents: clicked ? "none" : "",
+              }}
+            >
+              <button onClick={handlOnClickReq}>Log In</button>
             </div>
           </div>
           <div className="registerButton">
