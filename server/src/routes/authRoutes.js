@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { preRegister } = require("../middlewares/authMiddleware");
+const { parseTree } = require("../middlewares/treeGptParse");
+const DEFAULT_TREE = require("../assets/default_tree.json");
 require("dotenv").config();
 
 const router = express.Router();
@@ -19,6 +21,8 @@ router.post("/register", preRegister, async (req, res) => {
     });
     await user.save();
     const userId = user._id;
+
+    await parseTree(DEFAULT_TREE, userId);
 
     const actoken = await jwt.sign({ userId: userId }, process.env.KEY, {
       expiresIn: process.env.JWT_EXPIRE_DATE,

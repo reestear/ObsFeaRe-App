@@ -5,10 +5,13 @@ const Node = require("../models/Node");
 async function deleteTask(taskId, userId) {
   try {
     const task = await Task.findById(taskId);
-    const node = await Node.findById(task.nodeId);
-    if (node) {
-      node.focus = false;
-      node.save();
+
+    if (task.nodeId) {
+      const node = await Node.findById(task.nodeId);
+      if (node) {
+        node.focus = false;
+        node.save();
+      }
     }
 
     await ToDo.deleteMany({ userId: userId, taskId: taskId });

@@ -4,8 +4,8 @@ const Task = require("../models/Task");
 const ToDo = require("../models/ToDo");
 
 async function check_task_for_done(node) {
+  if (!node.taskId) return 0;
   const taskId = node.taskId;
-  if (!taskId) return 0;
 
   const task = await Task.findById(taskId);
   let num_children_done = 0;

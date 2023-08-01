@@ -6,8 +6,11 @@ import "./styles.css";
 
 const BackgroundTreeLayout = () => {
   const svgRef = useRef(null);
-  const WIDTH = 1600;
-  const HEIGHT = 1000;
+
+  const screenRes = JSON.parse(localStorage.getItem("screenRes"));
+  const WIDTH = screenRes.width;
+  const HEIGHT = screenRes.height;
+
   const nodeRadius = 20;
   const strokeColor = "lightgray";
   const edgeColor = "gray";
