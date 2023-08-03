@@ -42,16 +42,14 @@ export default function Outline() {
       {/* background color */}
       <Header togglePage={togglePage}></Header>
       {page === "WeekBan" && <WeekBan></WeekBan>}
-      {page === "PlayGround" && (
-        <TreesProvider>
-          <ChatHistoryProvider>
-            <NotifyInfoProvider>
-              <ToastContainer></ToastContainer>
-              <PlayGround></PlayGround>
-            </NotifyInfoProvider>
-          </ChatHistoryProvider>
-        </TreesProvider>
-      )}
+      <TreesProvider>
+        <ChatHistoryProvider>
+          <NotifyInfoProvider>
+            <ToastContainer></ToastContainer>
+            {page === "PlayGround" && <PlayGround></PlayGround>}
+          </NotifyInfoProvider>
+        </ChatHistoryProvider>
+      </TreesProvider>
 
       <Footer></Footer>
     </div>

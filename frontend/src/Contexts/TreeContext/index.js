@@ -41,16 +41,12 @@ export function TreesProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    // console.log("trees:");
-    // console.log(resTrees);
-
     let copyTrees = [];
     for (let treeInd in resTrees) {
       const tree = resTrees[treeInd];
-      // console.log("Working with tree: ");
-      // console.log(tree);
       const nodes = [],
         links = [];
+
       depth_first_search(tree.tree, nodes, links);
       copyTrees.push({
         treeId: tree.treeId,
@@ -64,12 +60,6 @@ export function TreesProvider({ children }) {
   const updateTrees = async () => {
     await getTrees();
   };
-  // useEffect(() => {
-  //   console.log("the whole updated trees: ");
-  //   trees.forEach((tree) => {
-  //     console.log(tree);
-  //   });
-  // }, [trees]);
 
   const payload = {
     trees: trees,

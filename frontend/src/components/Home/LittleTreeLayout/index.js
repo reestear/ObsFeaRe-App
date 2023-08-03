@@ -4,9 +4,12 @@ import data from "./data.json";
 
 const LittleTreeLayout = () => {
   const svgRef = useRef(null);
-  const WIDTH = 500;
-  const HEIGHT = 400;
-  const nodeRadius = 10;
+
+  const screenRes = JSON.parse(localStorage.getItem("screenRes"));
+  const WIDTH = screenRes.height * 0.5;
+  const HEIGHT = screenRes.height * 0.5;
+
+  const nodeRadius = (10 * screenRes.height) / 1000;
 
   useEffect(() => {
     const svgContainer = d3.select(svgRef.current);

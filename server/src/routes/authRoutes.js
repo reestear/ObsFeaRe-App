@@ -22,7 +22,7 @@ router.post("/register", preRegister, async (req, res) => {
     await user.save();
     const userId = user._id;
 
-    await parseTree(DEFAULT_TREE, userId);
+    parseTree(DEFAULT_TREE, userId);
 
     const actoken = await jwt.sign({ userId: userId }, process.env.KEY, {
       expiresIn: process.env.JWT_EXPIRE_DATE,

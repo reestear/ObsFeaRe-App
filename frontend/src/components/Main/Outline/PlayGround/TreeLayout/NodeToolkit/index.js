@@ -17,6 +17,7 @@ export default function NodeToolkit({
   handleTooltipEnter,
   handleTooltipLeave,
   tooltipOpen,
+  nodeRef,
 }) {
   const darkTheme = useSelector((state) => state.darkTheme);
 
@@ -25,7 +26,7 @@ export default function NodeToolkit({
   const notifyInfoContext = useNotifyInfo();
   const { notifyInfo } = notifyInfoContext;
   const dataContext = useData();
-  const { updateData, updateBoards } = dataContext;
+  const { updateData } = dataContext;
 
   const animatedProps = useSpring({
     from: {
@@ -45,7 +46,6 @@ export default function NodeToolkit({
         });
         await updateTrees();
         await updateData();
-        await updateBoards();
       } else {
         notifyInfo({
           message: "Server Error: Please, try again...",
@@ -63,14 +63,18 @@ export default function NodeToolkit({
       });
       return;
     }
+
+    node.focus = true;
+    nodeRef.style.fill = ColorNode.FOCUS_NODE;
+
     await setFocusOnNode(node._id).then(async (res) => {
       if (res.status) {
         notifyInfo({
           message: res.message,
           status: true,
         });
-        await updateTrees();
-        await updateData();
+        // await updateTrees();
+        updateData();
       } else {
         notifyInfo({
           message: "Server Error: Please, try again...",
@@ -100,12 +104,6 @@ export default function NodeToolkit({
             ? "0px 5px 10px 5px rgba(255, 255, 255, 0.05)"
             : "0px 5px 10px 5px rgba(0, 0, 0, 0.25)",
         }}
-        // style={{
-        //   top: `${nodePosition.y}px`,
-        //   left: `${nodePosition.x}px`,
-        // }}
-        // onMouseEnter={() => handleTooltipEnter()}
-        // // onMouseLeave={() => handleTooltipLeave()}
       >
         <div
           className="NodeToolkitTitle"

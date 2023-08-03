@@ -28,6 +28,7 @@ async function check_task_for_done(node) {
 
 async function dfs_is_done(curNodeId) {
   const curNode = await Node.findById(curNodeId);
+  if (!curNode) return 0;
 
   // reached leaf node
   if (curNode.children.length === 0) {

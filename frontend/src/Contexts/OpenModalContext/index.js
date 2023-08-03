@@ -135,8 +135,6 @@ export function ModalProvider({ children }) {
       }
     });
 
-    // console.log("the newModalTodos: ");
-    // console.log(newModalTodos);
     setModalTodos(newModalTodos);
   }
 
@@ -157,6 +155,8 @@ export function ModalProvider({ children }) {
       )
     );
   }
+
+  function frontModalSendTask() {} // in Dev
 
   async function modalSendTask() {
     await sendUpdatedTask(prevTask, modalTodos);

@@ -6,6 +6,7 @@ import "./styles.css";
 
 export default function LogIn() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");

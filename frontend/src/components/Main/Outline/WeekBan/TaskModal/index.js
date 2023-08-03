@@ -84,12 +84,12 @@ export default function TaskModal() {
         <button
           className="btn-save"
           onClick={async () => {
-            await modalSendTask();
             const _id = null,
               taskTitle = "";
             // firstTime++;
             togglePrevTask({ _id, taskTitle });
             toggleModal();
+            await modalSendTask();
           }}
         >
           Save
@@ -111,12 +111,12 @@ export default function TaskModal() {
             className="btn-delete"
             onClick={async () => {
               // await modalSendTask();
-              await deleteTask(prevTask._id);
               const _id = null,
                 taskTitle = "";
               // firstTime++;
               togglePrevTask({ _id, taskTitle });
               toggleModal();
+              deleteTask(prevTask._id);
             }}
           >
             Delete

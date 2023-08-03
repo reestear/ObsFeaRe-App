@@ -10,7 +10,7 @@ import Register from "./components/Register";
 import Start from "./components/Start";
 
 function App() {
-  const [isMobile, setIsMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleResize = () => {
     console.log("window.innerWidth: " + window.innerWidth);
@@ -20,8 +20,10 @@ function App() {
   };
 
   useEffect(() => {
-    handleResize(); // Set the initial value based on window size
-    window.addEventListener("resize", handleResize);
+    // remove the comments to handle the phone screen
+
+    // handleResize(); // Set the initial value based on window size
+    // window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);

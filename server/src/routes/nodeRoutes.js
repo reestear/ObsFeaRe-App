@@ -36,7 +36,7 @@ router.post("/new", getUser, async (req, res) => {
 
 async function deleteSubNode(curNodeId, userId) {
   const curNode = await Node.findById(curNodeId);
-  if (!curNode) return;
+  if (!!curNode) return;
 
   if (curNode.children.length == 0) {
     // leaf

@@ -19,11 +19,6 @@ export default function TaskItem({ task }) {
 
   const darkTheme = useSelector((state) => state.darkTheme);
   const { _id, taskTitle } = task;
-  // console.log("the taskTitle: ");
-  // console.log(taskTitle);
-  // console.log("is true: " + (prevTask === null));
-  // let k = 1;
-  // console.log(_id);
 
   return (
     <button
@@ -33,10 +28,6 @@ export default function TaskItem({ task }) {
         backgroundColor: darkTheme ? "#836534" : "#F2D998",
       }}
       onClick={async () => {
-        // console.log("clicked");
-        // console.log("is true: " + prevTask === null);
-        await updateData();
-
         if (!openModal || !prevTask._id) {
           togglePrevTask({ _id, taskTitle });
           toggleModal();

@@ -42,9 +42,7 @@ export function DataProvider({ children }) {
   ]);
 
   function frontUpdateData(todoId) {
-    console.log("inside upd");
     const { todos, tasks } = data;
-    console.log(todos);
 
     const newTodos = todos.map((todo) => {
       if (todo._id !== todoId) return todo;
@@ -58,8 +56,6 @@ export function DataProvider({ children }) {
         return copyTodo;
       }
     });
-    // console.log("newTodos: ");
-    // console.log(newTodos);
 
     setData({
       todos: newTodos,
@@ -105,7 +101,7 @@ export function DataProvider({ children }) {
   }
 
   useEffect(() => {
-    console.log("inside useEffBoard");
+    // console.log("inside useEffBoard");
     const { todos, tasks } = data;
     console.log(todos);
 
@@ -150,8 +146,6 @@ export function DataProvider({ children }) {
         newTodo.done = foundTodo.done;
       }
     });
-    console.log("newTodos");
-    console.log(newTodos);
 
     setData({
       todos: newTodos,
@@ -195,7 +189,7 @@ export function DataProvider({ children }) {
 
   useEffect(() => {
     updateData();
-    updateBoards();
+    // updateBoards();
   }, []);
 
   const payload = {

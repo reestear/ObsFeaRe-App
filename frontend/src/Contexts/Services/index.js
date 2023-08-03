@@ -21,8 +21,6 @@ export async function dataUserRegister(username, email, password) {
       status: false,
       message: "Incorrect Type of Credentials",
     };
-  //   console.log("sending user:");
-  //   console.log(user);
   return await axios
     .post(`${baseURL}/auth/register`, { user })
     .then(async (res) => {
@@ -32,7 +30,6 @@ export async function dataUserRegister(username, email, password) {
         status: true,
         message: mes.message,
       };
-      // console.log(mes);
     })
     .catch(async (err) => {
       const errMes = await JSON.parse(err.request.response).message;
@@ -98,9 +95,7 @@ export async function dataGetTasks() {
   };
   return await axios.get(`${baseURL}/tasks`, config).then(async (res) => {
     const mes = await JSON.parse(res.request.response);
-    // console.log(mes);
-    // console.log("dataGetTasks:");
-    // console.log(mes.tasks);
+    console.log("tasks");
     return mes.tasks;
   });
 }

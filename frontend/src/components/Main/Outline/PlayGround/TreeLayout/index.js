@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useTrees } from "../../../../../Contexts/TreeContext";
 import ColorNode from "./ColorNode.json";
@@ -29,17 +29,19 @@ const TreeLayout = React.memo(
 
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [tooltipNode, setTooltipNode] = useState(null);
+    const [nodeRef, setNodeRef] = useState(null);
     const [tooltipNodePosition, setTooltipNodePosition] = useState({
       x: 0,
       y: 0,
     });
 
-    function handleTooltipEnter() {
+    const handleTooltipEnter = useCallback(() => {
       setTooltipOpen(true);
-    }
-    function handleTooltipLeave() {
+    }, []);
+
+    const handleTooltipLeave = useCallback(() => {
       setTooltipOpen(false);
-    }
+    }, []);
 
     const [dragging, setDragging] = useState(false);
 
@@ -204,8 +206,6 @@ const TreeLayout = React.memo(
       // Render the trees
       trees.forEach((tree) => {
         const { nodes, links, treeId } = tree;
-        // console.log(nodes);
-        // console.log(links);
 
         // Retrieve the node positions from localStorage
         const storedNodePositions = localStorage.getItem("nodePositions");
@@ -366,11 +366,9 @@ const TreeLayout = React.memo(
             if (d3.event.altKey || d3.event.metaKey) {
               handleTooltipEnter();
               setTooltipNode(d);
+              setNodeRef(this);
               setTooltipNodePosition({ x: nodePosition.x, y: nodePosition.y });
             }
-
-            // console.log(d);
-            // console.log(nodePosition);
           })
           .on("mouseleave", function () {
             this.style.fill = this.getAttribute("prev_fill");
@@ -509,6 +507,7 @@ const TreeLayout = React.memo(
             handleTooltipEnter={handleTooltipEnter}
             handleTooltipLeave={handleTooltipLeave}
             tooltipOpen={tooltipOpen}
+            nodeRef={nodeRef}
           ></NodeToolkit>
         )}
         <svg ref={svgRef} width={WIDTH} height={HEIGHT}>

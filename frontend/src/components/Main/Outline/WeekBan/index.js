@@ -5,6 +5,7 @@ import WorkPage from "./WorkPage";
 import "./styles.css";
 
 export default function WeekBan() {
+  console.log("Mounting WeekBan");
   return (
     <div className="WeekBan">
       <TaskModal></TaskModal>
