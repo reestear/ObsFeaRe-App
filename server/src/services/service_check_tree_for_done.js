@@ -35,7 +35,6 @@ async function dfs_is_done(curNodeId) {
     const isTaskDone = await check_task_for_done(curNode);
     if (isTaskDone) {
       curNode.done = true;
-      curNode.focus = false;
       await curNode.save();
       return 1;
     } else {
