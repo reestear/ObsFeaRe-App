@@ -343,9 +343,9 @@ const TreeLayout = React.memo(
           .append("circle")
           .attr("r", nodeRadius)
           .style("fill", (d) => {
-            if (d.isRoot) return ColorNode.ROOT_NODE;
+            if (d.done) return ColorNode.DONE_NODE;
+            else if (d.isRoot) return ColorNode.ROOT_NODE;
             else if (d.focus) return ColorNode.FOCUS_NODE;
-            else if (d.done) return ColorNode.DONE_NODE;
             else if (d.isLeaf) return ColorNode.LEAF_NODE;
             return ColorNode.DEFAULT_NODE;
           })
