@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { preRegister } = require("../middlewares/authMiddleware");
-const { parseTree } = require("../middlewares/treeGptParse");
+const { parseTree } = require("../services/service_tree_gpt_parse");
 const DEFAULT_TREE = require("../assets/default_tree.json");
 require("dotenv").config();
 

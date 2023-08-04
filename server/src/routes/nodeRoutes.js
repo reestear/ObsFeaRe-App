@@ -2,7 +2,7 @@ const express = require("express");
 const Tree = require("../models/Tree");
 const Node = require("../models/Node");
 const { getUser } = require("../middlewares/authMiddleware");
-const { deleteTask } = require("../middlewares/taskMiddleware");
+const { deleteTask } = require("../services/service_tasks");
 const Task = require("../models/Task");
 
 const router = express.Router();

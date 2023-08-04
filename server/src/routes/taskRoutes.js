@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Task = require("../models/Task");
 const ToDo = require("../models/ToDo");
 const { getUser } = require("../middlewares/authMiddleware");
-const { deleteTask } = require("../middlewares/taskMiddleware");
+const { deleteTask } = require("../services/service_tasks");
 
 const router = express.Router();
 
