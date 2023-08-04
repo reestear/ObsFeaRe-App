@@ -8,6 +8,7 @@ const config = {
 };
 
 const baseURL = "https://obsfeare-api.onrender.com";
+// const baseURL = "http://localhost:8080";
 
 export async function dataUserRegister(username, email, password) {
   const user = {

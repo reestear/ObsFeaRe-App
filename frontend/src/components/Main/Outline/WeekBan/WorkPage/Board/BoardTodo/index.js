@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
 import { useData } from "../../../../../../../Contexts/DataContext";
-import { dataToggleToDo } from "../../../../../../../Contexts/Services";
 import { dragContext } from "../../../WorkPage";
 import colorsDark from "../../Board/colorsDark.json";
 import colorsLight from "../../Board/colorsLight.json";
@@ -28,7 +27,6 @@ export default function BoardTodo({ boardId, todo }) {
   const handleOnClick = async () => {
     frontUpdateData(todo._id);
 
-    await dataToggleToDo(todo._id);
     // await updateData();
     // await updateBoards();
   };

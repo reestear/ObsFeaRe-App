@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { ChatHistoryProvider } from "../../../Contexts/ChatHistoryContext";
 import { NotifyInfoProvider } from "../../../Contexts/NotifyInfoContext";
-import { TreesProvider } from "../../../Contexts/TreeContext";
 import Footer from "./Footer";
 import Header from "./Header";
 import PlayGround from "./PlayGround";
@@ -42,14 +41,12 @@ export default function Outline() {
       {/* background color */}
       <Header togglePage={togglePage}></Header>
       {page === "WeekBan" && <WeekBan></WeekBan>}
-      <TreesProvider>
-        <ChatHistoryProvider>
-          <NotifyInfoProvider>
-            <ToastContainer></ToastContainer>
-            {page === "PlayGround" && <PlayGround></PlayGround>}
-          </NotifyInfoProvider>
-        </ChatHistoryProvider>
-      </TreesProvider>
+      <ChatHistoryProvider>
+        <NotifyInfoProvider>
+          <ToastContainer></ToastContainer>
+          {page === "PlayGround" && <PlayGround></PlayGround>}
+        </NotifyInfoProvider>
+      </ChatHistoryProvider>
 
       <Footer></Footer>
     </div>

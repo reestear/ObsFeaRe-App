@@ -4,8 +4,10 @@ import {
   dataGetTasks,
   dataGetTodos,
   dataSendUpdatedTask,
+  dataToggleToDo,
   dataUpdateBoards,
 } from "../Services";
+import { useTrees } from "../TreeContext";
 
 const dataContext = createContext();
 
@@ -14,6 +16,9 @@ export function useData() {
 }
 
 export function DataProvider({ children }) {
+  const treesContext = useTrees();
+  const { updateTrees } = treesContext;
+
   const [data, setData] = useState({
     todos: [],
     tasks: [],
@@ -41,7 +46,7 @@ export function DataProvider({ children }) {
     },
   ]);
 
-  function frontUpdateData(todoId) {
+  async function frontUpdateData(todoId) {
     const { todos, tasks } = data;
 
     const newTodos = todos.map((todo) => {
@@ -61,6 +66,9 @@ export function DataProvider({ children }) {
       todos: newTodos,
       tasks: tasks,
     });
+
+    await dataToggleToDo(todoId);
+    await updateTrees();
   }
 
   async function updateData() {
@@ -86,18 +94,21 @@ export function DataProvider({ children }) {
 
     await updateData();
     await updateBoards();
+    await updateTrees();
   }
 
   async function deleteTask(taskId) {
     await dataDeleteTask(taskId);
     await updateData();
     await updateBoards();
+    await updateTrees();
   }
 
   async function dragUpdateBoards(merdegTodos) {
     await dataUpdateBoards(merdegTodos);
     await updateData();
     await updateBoards();
+    await updateTrees();
   }
 
   useEffect(() => {
@@ -134,7 +145,7 @@ export function DataProvider({ children }) {
     ]);
   }, [data]);
 
-  function frontUpdateBoards(mergedTodos) {
+  async function frontUpdateBoards(mergedTodos) {
     const { todos, tasks } = data;
     const newTodos = [...todos];
 
@@ -151,7 +162,8 @@ export function DataProvider({ children }) {
       todos: newTodos,
       tasks: tasks,
     });
-    dataUpdateBoards(mergedTodos);
+    await dataUpdateBoards(mergedTodos);
+    await updateTrees();
   }
 
   async function updateBoards() {
