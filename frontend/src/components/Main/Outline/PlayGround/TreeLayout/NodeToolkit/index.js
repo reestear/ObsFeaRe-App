@@ -1,13 +1,18 @@
 import { animated as a, useSpring } from "@react-spring/web";
 import React from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useChatHistory } from "../../../../../../Contexts/ChatHistoryContext";
 import { useData } from "../../../../../../Contexts/DataContext";
 import { useNotifyInfo } from "../../../../../../Contexts/NotifyInfoContext";
 import {
+  appendNode,
   deleteNode,
   setFocusOnNode,
 } from "../../../../../../Contexts/Services";
 import { useTrees } from "../../../../../../Contexts/TreeContext";
+import { ReactComponent as SUCCESS } from "../../../../../../assets/Icons/Success.svg";
+import { ReactComponent as WARNING } from "../../../../../../assets/Icons/Warning.svg";
 import ColorNode from "../ColorNode.json";
 import "./styles.css";
 
@@ -27,6 +32,10 @@ export default function NodeToolkit({
   const { notifyInfo } = notifyInfoContext;
   const dataContext = useData();
   const { updateData } = dataContext;
+  const chatHistoryContext = useChatHistory();
+  const { updateChatHistory } = chatHistoryContext;
+
+  const somefun = () => new Promise((res) => setTimeout(res, 5000));
 
   const animatedProps = useSpring({
     from: {
@@ -82,6 +91,53 @@ export default function NodeToolkit({
         });
       }
     });
+  };
+  const handleAppendClick = async () => {
+    toast
+      .promise(
+        appendNode(node.treeId, node._id),
+        {
+          pending: {
+            render() {
+              return "Waiting for Server ~45 sec.";
+            },
+            progress: 100,
+          },
+          success: {
+            render() {
+              return "Successfully Appended";
+            },
+            icon: <SUCCESS></SUCCESS>,
+            autoClose: 2000,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: true,
+            theme: "light",
+          },
+          error: {
+            render() {
+              return "Server Error: Try Again";
+            },
+            icon: <WARNING></WARNING>,
+            autoClose: 2000,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: true,
+            theme: "light",
+          },
+        },
+        {
+          position: "top-center",
+          progress: 0,
+        }
+      )
+      .then((res) => {
+        updateTrees();
+        updateChatHistory();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -262,7 +318,10 @@ export default function NodeToolkit({
                 </svg>
               </button>
             )}
-            <button style={{ backgroundColor: "#4679C7" }}>
+            <button
+              style={{ backgroundColor: "#4679C7" }}
+              onClick={handleAppendClick}
+            >
               <svg
                 width="12"
                 height="12"

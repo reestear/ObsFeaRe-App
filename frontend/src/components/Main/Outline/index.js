@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { ToastContainer } from "react-toastify";
 import { ChatHistoryProvider } from "../../../Contexts/ChatHistoryContext";
 import { NotifyInfoProvider } from "../../../Contexts/NotifyInfoContext";
 import Footer from "./Footer";
@@ -43,7 +42,6 @@ export default function Outline() {
       {page === "WeekBan" && <WeekBan></WeekBan>}
       <ChatHistoryProvider>
         <NotifyInfoProvider>
-          <ToastContainer></ToastContainer>
           {page === "PlayGround" && <PlayGround></PlayGround>}
         </NotifyInfoProvider>
       </ChatHistoryProvider>

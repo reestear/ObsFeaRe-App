@@ -48,6 +48,8 @@ async function parseAppendNode(nodeJson, userid, treeId, nodeId) {
 
   const appendedChildren = await parseNodeDFS(nodeJson, 1, treeId);
   const node = await Node.findById(nodeId);
+  node.isLeaf = false;
+  node.focus = false;
   node.children = [...node.children, ...appendedChildren];
   await node.save();
 }

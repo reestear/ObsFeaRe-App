@@ -228,17 +228,14 @@ export async function generateTree(request) {
     .post(`${baseURL}/trees/gpt/new`, { request }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
-      return { status: true, treeId: mes.treeId };
+      return mes.treeId;
     })
     .catch(async (err) => {
       const errMes = await JSON.parse(err.request.response).message;
 
       console.log("printing errMes: ");
       console.log(errMes);
-      return {
-        status: false,
-        message: errMes,
-      };
+      throw new Error(errMes);
     });
 }
 
@@ -293,5 +290,20 @@ export async function setFocusOnNode(nodeId) {
         status: false,
         message: errMes,
       };
+    });
+}
+
+export async function appendNode(treeId, nodeId) {
+  return await axios
+    .post(`${baseURL}/trees/gpt/append/${treeId}/${nodeId}`, {}, config)
+    .then(async (res) => {
+      const mes = await JSON.parse(res.request.response);
+      return mes.message;
+    })
+    .catch(async (err) => {
+      const errMes = await JSON.parse(err.request.response).message;
+      console.log("printing errMes: ");
+      console.log(errMes);
+      throw new Error(errMes);
     });
 }

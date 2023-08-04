@@ -13,8 +13,6 @@ function App() {
   const [isMobile, setIsMobile] = useState(true);
 
   const handleResize = () => {
-    console.log("window.innerWidth: " + window.innerWidth);
-    // setIsDesktop(window.innerWidth >= 1200); // Adjust the breakpoint as needed
     if (window.innerWidth < 1200) setIsMobile(true);
     else if (isMobile) setIsMobile(false);
   };

@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { ReactComponent as SUCCESS } from "../../assets/Icons/Success.svg";
 import { ReactComponent as WARNING } from "../../assets/Icons/Warning.svg";
 
@@ -27,10 +27,11 @@ export function NotifyInfoProvider({ children }) {
     notifyInfo: notifyInfo,
   };
   return (
-    // <ToastContainer>
-    <notifyInfoContext.Provider value={payload}>
-      {children}
-    </notifyInfoContext.Provider>
-    // </ToastContainer>
+    <>
+      <ToastContainer></ToastContainer>
+      <notifyInfoContext.Provider value={payload}>
+        {children}
+      </notifyInfoContext.Provider>
+    </>
   );
 }

@@ -129,8 +129,6 @@ router.post("/gpt/append/:treeId/:nodeId", getUser, async (req, res) => {
     const rootNodeId = (await Tree.findById(treeId)).nodeId;
     const rootNode = await Node.findById(rootNodeId);
     const treeTitle = rootNode.nodeTitle;
-    rootNode.isLeaf = false;
-    await rootNode.save();
 
     const filteredNode = filterNodeFields(node, [
       "userId",

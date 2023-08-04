@@ -2,11 +2,14 @@ import { animated as a, useSpring } from "@react-spring/web";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import CircleLoader from "react-spinners/CircleLoader";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useChatHistory } from "../../../../../Contexts/ChatHistoryContext";
 import { useNotifyInfo } from "../../../../../Contexts/NotifyInfoContext";
 import { generateTree } from "../../../../../Contexts/Services";
 import { useTrees } from "../../../../../Contexts/TreeContext";
+import { ReactComponent as SUCCESS } from "../../../../../assets/Icons/Success.svg";
+import { ReactComponent as WARNING } from "../../../../../assets/Icons/Warning.svg";
 import ChatDialog from "./ChatDIalog";
 import "./styles.css";
 
@@ -59,22 +62,56 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
       return;
     }
     loading.current = true;
-    const resStatus = await generateTree(req).then((res) => {
-      if (!res.status) {
-        notifyInfo({
-          message: "Server Error: Please, try again...",
-          status: false,
-        });
-      }
-      return res.status;
-    });
-    // console.log("resStatus : " + resStatus);
-    await updateTrees();
-    await updateChatHistory();
-    if (resStatus)
-      notifyInfo({ message: "Successfully created.", status: true });
-    loading.current = false;
-    scrollToBottom();
+
+    toast
+      .promise(
+        generateTree(req),
+        {
+          pending: {
+            render() {
+              return "Generating Tree ~45 sec.";
+            },
+            progress: 100,
+          },
+          success: {
+            render() {
+              return "Successfully Generated";
+            },
+            icon: <SUCCESS></SUCCESS>,
+            autoClose: 2000,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: true,
+            theme: "light",
+          },
+          error: {
+            render() {
+              return "Server Error: Try Again";
+            },
+            icon: <WARNING></WARNING>,
+            autoClose: 2000,
+            hideProgressBar: false,
+            pauseOnHover: false,
+            draggable: true,
+            theme: "light",
+          },
+        },
+        {
+          position: "top-center",
+          progress: 0,
+        }
+      )
+      .then((res) => {
+        updateTrees();
+        updateChatHistory();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        loading.current = false;
+        scrollToBottom();
+      });
   };
 
   const [request, setRequest] = useState("");
