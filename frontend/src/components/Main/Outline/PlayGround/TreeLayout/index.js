@@ -19,6 +19,7 @@ const TreeLayout = React.memo(
     const HEIGHT = screenRes.height;
     const nodeRadius = 15; // Adjust the radius of the circles
     const padding = 25;
+    const scaleFactor = 3;
 
     const svgRef = useRef(null);
 
@@ -115,10 +116,10 @@ const TreeLayout = React.memo(
       // Define the zoom behavior
       const zoom = d3
         .zoom()
-        .scaleExtent([0.25, 1.5])
+        .scaleExtent([1 / (scaleFactor * scaleFactor), 2])
         .translateExtent([
-          [-2 * WIDTH, -2 * HEIGHT], // Set the lower bounds for translation (left, top)
-          [2 * WIDTH, 2 * HEIGHT], // Set the upper bounds for translation (right, bottom)
+          [-scaleFactor * 2 * WIDTH, -scaleFactor * 2 * HEIGHT], // Set the lower bounds for translation (left, top)
+          [scaleFactor * 2 * WIDTH, scaleFactor * 2 * HEIGHT], // Set the upper bounds for translation (right, bottom)
         ])
         .filter(() => panning) // Disable zooming when panning is active
         .on("zoom", () => {
@@ -151,8 +152,8 @@ const TreeLayout = React.memo(
     useEffect(() => {
       const svgContainer = d3.select(svgRef.current);
       const zoomContainer = svgContainer.select(".zoom-container");
-      const width = 2 * WIDTH; // handle the width of background-grid
-      const height = 2 * HEIGHT; // handle the height of background-grid
+      const width = scaleFactor * WIDTH; // handle the width of background-grid
+      const height = scaleFactor * HEIGHT; // handle the height of background-grid
       const gridSize = 70; // Adjust the size of the grid squares as desired
 
       // Calculate the number of hor izontal and vertical lines based on the container size and grid size
@@ -160,10 +161,18 @@ const TreeLayout = React.memo(
       const numVerticalLines = Math.ceil(width / gridSize);
 
       // Create an array of x-coordinates for the vertical lines
-      const verticalLineX = d3.range(-2 * width, 2 * width, gridSize);
+      const verticalLineX = d3.range(
+        -scaleFactor * width,
+        scaleFactor * width,
+        gridSize
+      );
 
       // Create an array of y-coordinates for the horizontal lines
-      const horizontalLineY = d3.range(-2 * height, 2 * height, gridSize);
+      const horizontalLineY = d3.range(
+        -scaleFactor * height,
+        scaleFactor * height,
+        gridSize
+      );
 
       // Append the vertical lines to the zoom container
       zoomContainer
@@ -173,10 +182,10 @@ const TreeLayout = React.memo(
         .append("line")
         .attr("class", "vertical-line")
         .attr("x1", (d) => d)
-        .attr("y1", -2 * height)
+        .attr("y1", -scaleFactor * height)
         .attr("x2", (d) => d)
-        .attr("y2", 2 * height)
-        .style("stroke", darkTheme ? "#505050" : "white") // Adjust the line color as desired
+        .attr("y2", scaleFactor * height)
+        .style("stroke", darkTheme ? "#505050" : "#BBBBBB") // Adjust the line color as desired
         .style("stroke-width", 1); // Adjust the line width as desired
       // .style("stroke-dasharray", "2,2"); // Adjust the line dash pattern as desired
 
@@ -187,11 +196,11 @@ const TreeLayout = React.memo(
         .enter()
         .append("line")
         .attr("class", "horizontal-line")
-        .attr("x1", -2 * width)
+        .attr("x1", -scaleFactor * width)
         .attr("y1", (d) => d)
-        .attr("x2", 2 * width)
+        .attr("x2", scaleFactor * width)
         .attr("y2", (d) => d)
-        .style("stroke", darkTheme ? "#505050" : "white") // Adjust the line color as desired
+        .style("stroke", darkTheme ? "#505050" : "#BBBBBB") // Adjust the line color as desired
         .style("stroke-width", 1); // Adjust the line width as desired
       // .style("stroke-dasharray", "2,2"); // Adjust the line dash pattern as desired
     }, [darkTheme]);
@@ -242,6 +251,7 @@ const TreeLayout = React.memo(
               .forceLink(links)
               .id((d) => d._id)
               .distance(150)
+              .strength(0.5)
           )
           .force("charge", d3.forceManyBody().strength(-300));
 
@@ -513,8 +523,8 @@ const TreeLayout = React.memo(
         <svg ref={svgRef} width={WIDTH} height={HEIGHT}>
           <rect
             ref={rectRef}
-            width="100%"
-            height="100%"
+            width={WIDTH}
+            height={HEIGHT}
             fill={darkTheme ? "#2D2D2D" : "#EAEAEA"}
           />
           <g className="zoom-container"></g>
