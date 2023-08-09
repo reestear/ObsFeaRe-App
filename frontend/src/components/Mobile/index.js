@@ -3,7 +3,7 @@ import Typewriter from "typewriter-effect";
 import "./styles.css";
 
 export const Mobile = () => {
-  const text = "earn money and buy yourself at least some granny laptop";
+  const text = "Desktop's the key for all app features. Give it a go!";
   const delay = 25;
   const timeOut = (text.length + 20) * delay;
 

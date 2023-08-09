@@ -23,7 +23,8 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
   const notifyInfoContext = useNotifyInfo();
   const { notifyInfo } = notifyInfoContext;
 
-  const loading = useRef(false);
+  // const loading = useRef(false);
+  const [loading, setLoading] = useState(false);
 
   const overflowRef = useRef(null);
 
@@ -61,7 +62,7 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
       notifyInfo({ message: "Invalid Request...", status: false });
       return;
     }
-    loading.current = true;
+    setLoading(true);
 
     toast
       .promise(
@@ -69,7 +70,7 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
         {
           pending: {
             render() {
-              return "Generating Tree ~45 sec.";
+              return "Generating Tree ~20 sec.";
             },
             progress: 100,
           },
@@ -109,7 +110,7 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
         console.log(err);
       })
       .finally(() => {
-        loading.current = false;
+        setLoading(false);
         scrollToBottom();
       });
   };
@@ -184,15 +185,19 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
             <input
               id="requestInput"
               style={{
-                caretColor: loading.current
+                caretColor: loading
                   ? "transparent"
                   : darkTheme
                   ? "white"
                   : "black",
                 color: darkTheme ? "white" : "",
               }}
-              placeholder={loading.current ? "Waiting..." : "Send request..."}
-              value={loading.current ? "" : request}
+              placeholder={
+                loading
+                  ? "Waiting a little bit..."
+                  : "Describe what you need..."
+              }
+              value={loading ? "" : request}
               onKeyDown={(e) => e.stopPropagation()}
               onChange={(e) => {
                 setRequest(e.target.value);
@@ -200,10 +205,10 @@ const ChatAI = ({ openChat, toggleOpenChat }) => {
             />
 
             <div style={{ backgroundColor: "transparent" }}>
-              {loading.current ? (
+              {loading ? (
                 <div style={{ paddingLeft: "2px" }}>
                   <CircleLoader
-                    loading={loading.current}
+                    loading={loading}
                     color={darkTheme ? "#EAEAEA" : "#292D32"}
                     size={15}
                   ></CircleLoader>

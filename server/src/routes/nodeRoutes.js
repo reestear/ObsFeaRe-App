@@ -4,6 +4,7 @@ const Node = require("../models/Node");
 const { getUser } = require("../middlewares/authMiddleware");
 const { deleteTask } = require("../services/service_tasks");
 const Task = require("../models/Task");
+const { recreateNode } = require("../services/service_recreate_node");
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.post("/new", getUser, async (req, res) => {
   }
 });
 
-async function deleteSubNode(curNodeId, userId) {
+async function deleteSubNode(curNodeId, userId, depth) {
   const curNode = await Node.findById(curNodeId);
   if (!curNode) return;
 
@@ -46,10 +47,35 @@ async function deleteSubNode(curNodeId, userId) {
   }
   for (let childInd in curNode.children) {
     const childId = curNode.children[childInd];
-    deleteSubNode(childId, userId);
+    deleteSubNode(childId, userId, depth + 1);
   }
-  await Node.deleteOne({ _id: curNodeId });
+  if (depth !== 0) await Node.deleteOne({ _id: curNodeId });
 }
+
+// recreating the subNode
+router.post("/recreate", getUser, async (req, res) => {
+  try {
+    const { nodeId } = req.body;
+    const userId = req.userId;
+    // console.log(nodeId);
+    const node = await Node.findById(nodeId);
+
+    await deleteSubNode(nodeId, userId, 0);
+    node.children = [];
+    await node.save();
+
+    await recreateNode(userId, node.treeId, nodeId);
+
+    res.status(201).json({
+      message: "Successfully recreated",
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({
+      message: "Something Went Wrong in the Server",
+    });
+  }
+});
 
 // deleting the subNode
 router.post("/delete", getUser, async (req, res) => {
@@ -59,6 +85,8 @@ router.post("/delete", getUser, async (req, res) => {
     // console.log(nodeId);
 
     await deleteSubNode(nodeId, userId);
+    await Node.deleteOne({ _id: nodeId });
+
     const tree = await Tree.findOne({ nodeId: nodeId });
     if (tree) await Tree.deleteOne({ _id: tree._id });
 

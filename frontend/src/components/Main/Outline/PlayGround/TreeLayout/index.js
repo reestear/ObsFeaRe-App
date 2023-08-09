@@ -254,6 +254,7 @@ const TreeLayout = React.memo(
               .strength(0.5)
           )
           .force("charge", d3.forceManyBody().strength(-300));
+        // .alphaTarget(0.3); // Dev
 
         // Create SVG elements for links
         const linkElements = treeGroup
@@ -296,7 +297,7 @@ const TreeLayout = React.memo(
           // setTooltipNode(null);
         }
         function dragended(d) {
-          if (!d3.event.active) simulation.alphaTarget(0);
+          if (!d3.event.active) simulation.alphaTarget(0); // Dev
           d.fx = null;
           d.fy = null;
 

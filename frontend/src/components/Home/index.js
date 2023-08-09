@@ -8,18 +8,15 @@ import "./styles.css";
 export default function Home() {
   const navigate = useNavigate();
 
-  const text =
-    "Generate, Visualize, Explore, and Build your own Grind/Mind/Road-map with much more features";
-
   const bannerPs = [];
   for (let i = 0; i < 44; i++) bannerPs.push("ObsFeaRe");
 
   const rectangles = [useRef(), useRef(), useRef(), useRef()];
 
-  function calculateNewIndex(currentIndex, totalRectangles) {
-    const newIndex = (currentIndex % totalRectangles) + 1;
-    return newIndex;
-  }
+  // function calculateNewIndex(currentIndex, totalRectangles) {
+  //   const newIndex = (currentIndex % totalRectangles) + 1;
+  //   return newIndex;
+  // }
 
   // useEffect(() => {
   //   function handleAnimationIteration(index, totalRectangles) {
@@ -74,6 +71,16 @@ export default function Home() {
     navigate("/login");
   };
 
+  const text =
+    "Generate, Visualize, Explore, and Build your own Grind/Mind/Road-map with much more features";
+
+  const text0 = "Do you want to ";
+  const text1 = "learn to play on piano?";
+  const text2 = "become a Software Engineer at Apple?";
+  const text3 = "become a CEO of Astana HUB?";
+  const text4 =
+    "Then, dive into ObsFeaRe, where you can build your own RoadMaps to reach your Goals!";
+
   return (
     <div className="Home">
       <a.div className="InfiniteBannerTop" style={{ ...animatedPropsTop }}>
@@ -85,9 +92,21 @@ export default function Home() {
       </a.div>
       <div className="Home-Left">
         <Typewriter
-          options={{ delay: 25 }}
+          options={{ delay: 35, deleteSpeed: 20 }}
           onInit={(typewrite) => {
-            typewrite.typeString(text).start();
+            typewrite
+              .typeString(text0)
+              .typeString(text1)
+              .pauseFor(1000)
+              .deleteChars(text1.length)
+              .typeString(text2)
+              .pauseFor(1000)
+              .deleteChars(text2.length)
+              .typeString(text3)
+              .pauseFor(1000)
+              .deleteAll()
+              .typeString(text4)
+              .start();
           }}
         ></Typewriter>
         {/* <p>{text}</p> */}

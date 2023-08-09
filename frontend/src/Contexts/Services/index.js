@@ -7,8 +7,8 @@ const config = {
   },
 };
 
-const baseURL = "https://obsfeare-api.onrender.com";
-// const baseURL = "http://localhost:8080";
+// const baseURL = "https://obsfeare-api.onrender.com";
+const baseURL = "http://localhost:8080";
 
 export async function dataUserRegister(username, email, password) {
   const user = {
@@ -236,6 +236,25 @@ export async function generateTree(request) {
       console.log("printing errMes: ");
       console.log(errMes);
       throw new Error(errMes);
+    });
+}
+
+export async function recreateNode(nodeId) {
+  return await axios
+    .post(`${baseURL}/nodes/recreate`, { nodeId }, config)
+    .then(async (res) => {
+      const mes = await JSON.parse(res.request.response);
+      return { status: true, message: mes.message };
+    })
+    .catch(async (err) => {
+      const errMes = await JSON.parse(err.request.response).message;
+
+      console.log("printing errMes: ");
+      console.log(errMes);
+      return {
+        status: false,
+        message: errMes,
+      };
     });
 }
 
