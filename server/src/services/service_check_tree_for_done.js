@@ -45,14 +45,17 @@ async function dfs_is_done(curNodeId) {
   }
 
   // else moving to the subNode:
-  let num_children_done = 0;
+  let num_children_done = 0,
+    tot_children = 0;
 
   for (const childId of curNode.children) {
+    if (await Node.findById(childId)) tot_children++;
+
     const isChildDone = await dfs_is_done(childId);
     if (isChildDone) num_children_done++;
   }
 
-  if (num_children_done === curNode.children.length) {
+  if (num_children_done === tot_children) {
     curNode.done = true;
     await curNode.save();
     return 1;

@@ -69,8 +69,11 @@ async function recreateNode(userId, treeId, nodeId) {
     const request = `Recreating the node: ${node.nodeTitle} of tree: ${treeTitle}`;
     await parseChatDialog(request, responseMessage, userId);
     await check_tree_for_done(treeId);
+
+    return "Successfully recreated!";
   } catch (err) {
     console.log(err);
+    throw new Error("Server Error...");
   }
 }
 

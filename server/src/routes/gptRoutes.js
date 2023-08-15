@@ -82,6 +82,9 @@ router.post("/gpt/new", getUser, async (req, res) => {
       )
     );
 
+    console.log("treeJson");
+    console.log(treeJson);
+
     const treeId = await parseTree(treeJson, req.userId);
     await parseChatDialog(request, responseMessage, req.userId);
 
@@ -100,9 +103,14 @@ router.post("/gpt/append/:treeId/:nodeId", getUser, async (req, res) => {
     const userId = req.userId;
     const { treeId, nodeId } = req.params;
 
-    await appendNode(userId, treeId, nodeId);
-
-    res.status(201).json({ message: "Successfully Appended" });
+    await appendNode(userId, treeId, nodeId)
+      .then((resposne) => {
+        res.status(201).json({ message: "Successfully Appended" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(501).json({ message: "Something Went Wrong in the Server" });
+      });
   } catch (err) {
     console.log(err);
     res.status(501).json({ message: "Something Went Wrong in the Server" });

@@ -4,6 +4,9 @@ const Task = require("../models/Task");
 const ToDo = require("../models/ToDo");
 const { getUser } = require("../middlewares/authMiddleware");
 const { deleteTask } = require("../services/service_tasks");
+const {
+  check_tree_for_done,
+} = require("../services/service_check_tree_for_done");
 
 const router = express.Router();
 
@@ -72,7 +75,7 @@ router.post("/:taskId/:taskTitle", getUser, async (req, res) => {
         // console.log("todoArr : " + todoArr);
         task.todos = todoArr;
         await task.save();
-        // Continue with the rest of your code that depends on todoArr
+        if (task.treeId) await check_tree_for_done(task.treeId);
       })
       .catch((error) => {
         console.error("Error with todos:", error);

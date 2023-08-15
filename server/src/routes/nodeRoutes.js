@@ -5,6 +5,9 @@ const { getUser } = require("../middlewares/authMiddleware");
 const { deleteTask } = require("../services/service_tasks");
 const Task = require("../models/Task");
 const { recreateNode } = require("../services/service_recreate_node");
+const {
+  check_tree_for_done,
+} = require("../services/service_check_tree_for_done");
 
 const router = express.Router();
 
@@ -59,19 +62,26 @@ router.post("/recreate", getUser, async (req, res) => {
     const userId = req.userId;
     // console.log(nodeId);
     const node = await Node.findById(nodeId);
-
     await deleteSubNode(nodeId, userId, 0);
     node.children = [];
     await node.save();
 
-    await recreateNode(userId, node.treeId, nodeId);
-
-    res.status(201).json({
-      message: "Successfully recreated",
-    });
+    await recreateNode(userId, node.treeId, nodeId)
+      .then(async (response) => {
+        await check_tree_for_done(node.treeId);
+        res.status(201).json({
+          message: "Successfully recreated",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          message: "Something Went Wrong in the Server",
+        });
+      });
   } catch (err) {
     console.log(err.message);
-    res.status(400).json({
+    res.status(500).json({
       message: "Something Went Wrong in the Server",
     });
   }
@@ -89,6 +99,7 @@ router.post("/delete", getUser, async (req, res) => {
 
     const tree = await Tree.findOne({ nodeId: nodeId });
     if (tree) await Tree.deleteOne({ _id: tree._id });
+    else await check_tree_for_done(tree._id);
 
     res.status(201).json({
       message: "Successfully deleted",

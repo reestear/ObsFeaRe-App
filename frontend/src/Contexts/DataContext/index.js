@@ -18,6 +18,7 @@ export function useData() {
 export function DataProvider({ children }) {
   const treesContext = useTrees();
   const { updateTrees } = treesContext;
+  let updateTreesQueue = 0;
 
   const [data, setData] = useState({
     todos: [],
@@ -67,8 +68,11 @@ export function DataProvider({ children }) {
       tasks: tasks,
     });
 
-    await dataToggleToDo(todoId);
-    await updateTrees();
+    updateTreesQueue++;
+    dataToggleToDo(todoId).then(() => {
+      updateTreesQueue--;
+      updateTrees();
+    });
   }
 
   async function updateData() {
@@ -162,8 +166,11 @@ export function DataProvider({ children }) {
       todos: newTodos,
       tasks: tasks,
     });
-    await dataUpdateBoards(mergedTodos);
-    await updateTrees();
+    updateTreesQueue++;
+    dataUpdateBoards(mergedTodos).then(() => {
+      updateTreesQueue--;
+      updateTrees();
+    });
   }
 
   async function updateBoards() {

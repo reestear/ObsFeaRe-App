@@ -69,8 +69,11 @@ async function appendNode(userId, treeId, nodeId) {
     const request = `Appending the node: ${node.nodeTitle} of tree: ${treeTitle}`;
     await parseChatDialog(request, responseMessage, userId);
     await check_tree_for_done(treeId);
+
+    return "Successfully Divided!";
   } catch (err) {
     console.log(err);
+    throw new Error("Server Error...");
   }
 }
 
