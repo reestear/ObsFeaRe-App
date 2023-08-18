@@ -4,16 +4,6 @@ const { Configuration, OpenAIApi } = require("openai");
 const { parseTree } = require("../services/service_tree_gpt_parse");
 const { parseChatDialog } = require("../services/service_chatHistory");
 const { extractTreeJson } = require("../services/service_extract_tree_json");
-// const { get_populated_node } = require("../services/service_get_children_node");
-// const { filterNodeFields } = require("../services/service_filter_node");
-// const {
-//   parseAppendNode,
-// } = require("../services/service_append_tree_gpt_parse");
-// const {
-//   check_tree_for_done,
-// } = require("../services/service_check_tree_for_done");
-// const Node = require("../models/Node");
-// const Tree = require("../models/Tree");
 const { appendNode } = require("../services/service_append_node");
 require("dotenv").config();
 

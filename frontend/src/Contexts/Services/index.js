@@ -7,7 +7,7 @@ const config = {
   },
 };
 
-const baseURL = "https://obsfeare-api.onrender.com";
+const baseURL = process.env.REACT_APP_SERVER_PORT;
 // const baseURL = "http://localhost:8080";
 
 export async function dataUserRegister(username, email, password) {
