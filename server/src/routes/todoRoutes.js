@@ -5,6 +5,7 @@ const { getUser } = require("../middlewares/authMiddleware");
 const {
   check_tree_for_done,
 } = require("../services/service_check_tree_for_done");
+const Tree = require("../models/Tree");
 
 const router = express.Router();
 
@@ -50,6 +51,31 @@ router.post("/boardsUpdate", getUser, async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Something Went Wrong in the Server" });
+  }
+});
+
+// Rechecking todos route
+router.post("/", getUser, async (req, res) => {
+  // Rechecking todo logic
+  try {
+    const { todoIds } = req.body;
+    const treeId = (await ToDo.findById(todoIds[0])).treeId;
+
+    for (const todoId of todoIds) {
+      const todo = await ToDo.findById(todoId);
+
+      todo.boardId = todo.done ? 0 : 3;
+      todo.done = !todo.done;
+
+      await todo.save();
+    }
+
+    await check_tree_for_done(treeId);
+
+    res.json({ message: "Successfully Updated the Tree" });
+  } catch (err) {
+    console.log(err);
+    res.status(501).json({ message: "Something Went Wrong in the Server" });
   }
 });
 

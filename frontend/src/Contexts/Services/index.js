@@ -7,8 +7,8 @@ const config = {
   },
 };
 
-const baseURL = "https://obsfeare-api.onrender.com";
-// const baseURL = "http://localhost:8080";
+// const baseURL = "https://obsfeare-api.onrender.com";
+const baseURL = "http://localhost:8080";
 
 export async function dataUserRegister(username, email, password) {
   const user = {
@@ -96,7 +96,7 @@ export async function dataGetTasks() {
   };
   return await axios.get(`${baseURL}/tasks`, config).then(async (res) => {
     const mes = await JSON.parse(res.request.response);
-    console.log("tasks");
+    // console.log("tasks");
     return mes.tasks;
   });
 }
@@ -127,7 +127,7 @@ export async function dataSendUpdatedTask({ _id, taskTitle }, todos) {
     });
 }
 
-export async function dataToggleToDo(todoId) {
+export async function dataToggleToDos(todoIds) {
   const actoken = sessionStorage.getItem("actoken");
   const config = {
     headers: {
@@ -136,7 +136,7 @@ export async function dataToggleToDo(todoId) {
   };
 
   return await axios
-    .post(`${baseURL}/todos/${todoId}`, {}, config)
+    .post(`${baseURL}/todos`, { todoIds }, config)
     .then(async (res) => {
       const mes = await JSON.parse(res.request.response);
 

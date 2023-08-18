@@ -4,7 +4,7 @@ import {
   dataGetTasks,
   dataGetTodos,
   dataSendUpdatedTask,
-  dataToggleToDo,
+  dataToggleToDos,
   dataUpdateBoards,
 } from "../Services";
 import { useTrees } from "../TreeContext";
@@ -15,10 +15,12 @@ export function useData() {
   return useContext(dataContext);
 }
 
+let timeout;
+let todoIds = [];
+
 export function DataProvider({ children }) {
   const treesContext = useTrees();
   const { updateTrees } = treesContext;
-  let updateTreesQueue = 0;
 
   const [data, setData] = useState({
     todos: [],
@@ -47,6 +49,23 @@ export function DataProvider({ children }) {
     },
   ]);
 
+  function debounce(cb, delay = 1000) {
+    return (...args) => {
+      clearTimeout(timeout);
+
+      timeout = setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  }
+
+  const debounceToggleTodos = debounce(async () => {
+    console.log("sending request with todoIds: " + todoIds);
+    await dataToggleToDos(todoIds);
+    await updateTrees();
+    todoIds = [];
+  });
+
   async function frontUpdateData(todoId) {
     const { todos, tasks } = data;
 
@@ -68,11 +87,9 @@ export function DataProvider({ children }) {
       tasks: tasks,
     });
 
-    updateTreesQueue++;
-    dataToggleToDo(todoId).then(() => {
-      updateTreesQueue--;
-      updateTrees();
-    });
+    todoIds.push(todoId);
+
+    debounceToggleTodos();
   }
 
   async function updateData() {
@@ -87,8 +104,8 @@ export function DataProvider({ children }) {
 
   async function sendUpdatedTask(prevTask, modalTodos) {
     const { _id, taskTitle } = prevTask;
-    console.log("inside of sendUpdatedTask");
-    console.log(_id + " " + taskTitle);
+    // console.log("inside of sendUpdatedTask");
+    // console.log(_id + " " + taskTitle);
     if (_id === null || taskTitle === null || (await taskTitle.trim()) === "")
       return false;
 
@@ -118,7 +135,7 @@ export function DataProvider({ children }) {
   useEffect(() => {
     // console.log("inside useEffBoard");
     const { todos, tasks } = data;
-    console.log(todos);
+    // console.log(todos);
 
     const weekTodos = todos.filter((todo) => todo.boardId === 0);
     const activeTodos = todos.filter((todo) => todo.boardId === 1);
@@ -166,11 +183,8 @@ export function DataProvider({ children }) {
       todos: newTodos,
       tasks: tasks,
     });
-    updateTreesQueue++;
-    dataUpdateBoards(mergedTodos).then(() => {
-      updateTreesQueue--;
-      updateTrees();
-    });
+    await dataUpdateBoards(mergedTodos);
+    await updateTrees();
   }
 
   async function updateBoards() {

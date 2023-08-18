@@ -24,7 +24,7 @@ export default function BoardTodo({ boardId, todo }) {
   const darkTheme = useSelector((state) => state.darkTheme);
   const colors = darkTheme ? colorsDark : colorsLight;
 
-  const handleOnClick = async () => {
+  const handleOnClick = () => {
     frontUpdateData(todo._id);
 
     // await updateData();
